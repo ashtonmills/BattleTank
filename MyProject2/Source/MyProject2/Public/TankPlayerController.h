@@ -14,7 +14,11 @@ UCLASS()
 class MYPROJECT2_API ATankPlayerController : public APlayerController
 {
 	GENERATED_BODY()
-	
+private:
+	ATank* MyTank = nullptr;
+
 public : 
 	ATank* GetControlledTank() const;
+	void SetControlledTank();
+	void BeginPlay() override;
 };
