@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "Tank.h"
 #include "AIController.h"
+#include "Runtime/Engine/Classes/GameFramework/Actor.h"
+#include "Runtime/Engine/Classes/Engine/World.h"
 #include "TankAIController.generated.h"
 
 /**
@@ -17,10 +19,8 @@ class MYPROJECT2_API ATankAIController : public AAIController
 private :
 	ATank* AITank=nullptr;
 public :
-	void LogPossessStatus();
 	void BeginPlay() override;
 	void SetControlledTank();
 	ATank* GetControlledTank() const;
-
-	
+	ATank* GetPlayerTank() const;
 };
