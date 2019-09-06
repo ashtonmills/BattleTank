@@ -34,14 +34,18 @@ void ATankPlayerController::Tick(float DeltaTime)
 
 }
 
+
+
+
 void ATankPlayerController::AimAtCrosshair()
 {
 	if (!MyTank) { return; }
 	FVector HitLocation; //out parameter
-	GetSightRayHitLocation(HitLocation);
-	//Get world location if raycast through crosshair
-	//if it hits landscape
-	  //tell controlled tank to aim at theis point
+	if (GetSightRayHitLocation(HitLocation))
+	{
+		GetControlledTank()->AimAt(HitLocation);
+	}
+
 }
 
 bool ATankPlayerController::GetSightRayHitLocation(FVector& HitLocation) 
@@ -49,17 +53,14 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& HitLocation)
 	//find crosshair position in pixels
 	int32 ViewportSizeX, ViewportSizeY;
 	GetViewportSize(ViewportSizeX, ViewportSizeY);
-	FVector2D ScreenLocation = FVector2D(ViewportSizeX*CrosshairXLocation, ViewportSizeY*CrosshairYLocation);
+	auto ScreenLocation = FVector2D(ViewportSizeX*CrosshairXLocation, ViewportSizeY*CrosshairYLocation);
 	
 	FVector LookDirection;
 	if (GetLookDirection(ScreenLocation, LookDirection))
 	{
 		//Raycast along that Lookdirecton and see what we hit (up to Max range)
-		FVector HitLocation;
 		GetLookVectorHitLocation(LookDirection,HitLocation);
-		UE_LOG(LogTemp, Warning, TEXT("HitDirection: %s "), *HitLocation.ToString());
 	}
-	HitLocation = FVector(0);
 	return true;
 }
 
@@ -72,7 +73,6 @@ bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& 
 bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVector& HitLocation)
 {
 	//make the raycast by single channnl
-	FCollisionQueryParams TraceParameters(FName(TEXT("")), false, GetOwner());
 	FHitResult Hit;
 	auto StartLocation = PlayerCameraManager->GetCameraLocation();
 	auto EndLocation = StartLocation + (LookDirection * AimRange);
@@ -81,5 +81,7 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVec
 		HitLocation = Hit.Location;
 		return true;
 	}
-	else return false;
+		HitLocation = FVector(0);
+		return false;
 }
+
