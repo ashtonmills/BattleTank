@@ -3,9 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "TankAimingComponent.h"
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h"
+
+//forward declarations
+class UTankAimingComponent;
+class UTankBarrel;
 
 class UTankBarrel;
 UCLASS()
@@ -23,13 +26,11 @@ private:
 	ATank();
 
 protected:
-	
 	UTankAimingComponent* TankAimingComponent = nullptr;
 	
 public:	
 	virtual void BeginPlay() override;
 	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
