@@ -6,8 +6,12 @@
 #include "Components/ActorComponent.h"
 #include "Runtime/Engine/Classes/Components/SceneComponent.h"
 #include "Runtime/Engine/Classes/GameFramework/Actor.h"
+#include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 #include "TankAimingComponent.generated.h"
 
+//Forward declaration
+class UTankBarrel; 
+//Holds barrel's propertires and elevate method
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class MYPROJECT2_API UTankAimingComponent : public UActorComponent
@@ -16,21 +20,20 @@ class MYPROJECT2_API UTankAimingComponent : public UActorComponent
 
 public:	
 	// Sets default values for this component's properties
-	void SetBarrelReference(UStaticMeshComponent* BarrelToSet);
+	void SetBarrelReference(UTankBarrel* BarrelToSet);
 
 
 protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
+
 	UTankAimingComponent();
 
 
 public:	
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
 	void AimAt(FVector Hitlocation, float LaunchSpeed);
 
 private:
-	UStaticMeshComponent* Barrel = nullptr;
+	UTankBarrel* Barrel = nullptr;
+	void MoveBarrelTowards(FVector AimDirection);
 		
 };
