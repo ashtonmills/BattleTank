@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Components/StaticMeshComponent.h"
+#include "Runtime/Engine/Classes/Engine/World.h"
+#include "Runtime/Core/Public/Math/UnrealMathUtility.h"
 #include "TankBarrel.generated.h"
 
 /**
@@ -15,7 +17,7 @@ class MYPROJECT2_API UTankBarrel : public UStaticMeshComponent
 	GENERATED_BODY()
 
 public:
-	void Elevate(float DegreesPerSecond);
+	void Elevate(float RelativeSpeed);
 
 private:
 
