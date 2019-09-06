@@ -3,6 +3,7 @@
 #include "TankAimingComponent.h"
 
 #include "TankBarrel.h"
+#include "TankTurret.h"
 
 // Sets default values for this component's properties
 UTankAimingComponent::UTankAimingComponent()
@@ -20,9 +21,15 @@ void UTankAimingComponent::SetBarrelReference(UTankBarrel* BarrelToSet)
 	Barrel = BarrelToSet;
 }
 
+void UTankAimingComponent::SetTurretReference(UTankTurret* TurretToSet)
+{
+	Turret = TurretToSet;
+}
+
 void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 {
-	if (!Barrel) { return; }
+	if (!Barrel) { UE_LOG(LogTemp,Error,TEXT("missing barrel component")) return; }
+	if (!Turret) { UE_LOG(LogTemp, Error, TEXT("missing turret component")) return; }
 	FVector OutLaunchVelocity(0);
 	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));//will look for the socket we put on the barrel,if it can't find it will just return the object location
 
@@ -41,6 +48,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 	{
 		auto AimDirection = OutLaunchVelocity.GetSafeNormal();
 		MoveBarrelTowards(AimDirection);
+	//	MoveTurretTowards(AimDirection);
 		auto Time = GetWorld()->GetTimeSeconds();
 		UE_LOG(LogTemp, Warning, TEXT("%f: Aim solution found"), Time);
 	}
@@ -60,4 +68,14 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	//UE_LOG(LogTemp, Warning, TEXT("AimAsRotator: %s"), *AimAsRotator.ToString())
 
 		Barrel->Elevate(DeltaRotator.Pitch);
+		Turret->Turn(DeltaRotator.GetNormalized().Yaw);
 }
+
+//void UTankAimingComponent::MoveTurretTowards(FVector AimDirection)
+//{
+//	auto TurretRotator = Turret->GetForwardVector().Rotation();
+//	auto AimAsRotator = AimDirection.Rotation();
+//	auto DeltaRotator = AimAsRotator - TurretRotator;
+//
+//	Turret->Turn(DeltaRotator.Yaw);
+//}

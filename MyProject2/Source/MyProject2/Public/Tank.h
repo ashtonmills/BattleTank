@@ -9,6 +9,7 @@
 //forward declarations
 class UTankAimingComponent;
 class UTankBarrel;
+class UTankTurret;
 
 class UTankBarrel;
 UCLASS()
@@ -20,6 +21,9 @@ public:
 
 	UFUNCTION(BlueprintCallable,Category = Setup)
 	void SetBarrelReference(UTankBarrel* BarrelToSet);
+
+	UFUNCTION(BlueprintCallable, Category = Setup)
+	void SetTurretReference(UTankTurret* TurretToSet);
 
 private:
 	// Sets default values for this pawn's properties
