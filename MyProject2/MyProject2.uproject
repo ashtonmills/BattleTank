@@ -13,5 +13,16 @@
 				"AIModule"
 			]
 		}
+	],
+	"TargetPlatforms": [
+		"Android",
+		"AllDesktop",
+		"HTML5",
+		"WindowsNoEditor",
+		"Lumin",
+		"MacNoEditor",
+		"IOS",
+		"LinuxNoEditor",
+		"TVOS"
 	]
 }

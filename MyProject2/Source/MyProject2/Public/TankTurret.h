@@ -16,7 +16,7 @@ class MYPROJECT2_API UTankTurret : public UStaticMeshComponent
 {
 	GENERATED_BODY()
 private:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 		float MaxTurnSpeed = 10.0f;
 public:
 	void Turn(float RelativeSpeed);

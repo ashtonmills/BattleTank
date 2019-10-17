@@ -49,11 +49,17 @@ void ATank::SetTurretReference(UTankTurret* TurretToSet)
 
 void ATank::Fire()
 {
-	UE_LOG(LogTemp, Warning, TEXT("FIRE IN THE HOLE!"));
-	if (!Barrel) { return; }
-	if (!ProjectileBlueprint) { return; }
-	//spawn a projectile at socket location on the barrel
-	FVector ProjStartLocation = Barrel->GetSocketLocation(FName("Projectile"));
-	FRotator ProjStartRotation = Barrel->GetSocketRotation(FName("Projectile"));
-	GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint, ProjStartLocation, ProjStartRotation);
+	if (!ProjectileBlueprint) { UE_LOG(LogTemp,Warning,TEXT("ProjectileBlueprint not assigned to tank")); return; }
+	bool bisReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds;
+
+	if (Barrel && bisReloaded)
+	{
+		auto Projectile = GetWorld()->SpawnActor<AProjectile>(
+			ProjectileBlueprint, Barrel->GetSocketLocation(FName("Projectile")),
+			Barrel->GetSocketRotation(FName("Projectile"))
+			);
+		Projectile->LauchProjectile(LaunchSpeed);
+		LastFireTime = FPlatformTime::Seconds();
+	}
+
 }

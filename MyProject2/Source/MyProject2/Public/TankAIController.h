@@ -22,8 +22,5 @@ private :
 	ATank* AITank=nullptr;
 public :
 	void BeginPlay() override;
-	void SetControlledTank();
-	ATank* GetControlledTank() const;
-	ATank* GetPlayerTank() const;
 	void Tick(float DeltaTime) override;
 };
