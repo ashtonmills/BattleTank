@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{01174776-9831-448F-8C67-C06AD77252EC}" SchemaVersion="94">
+	<Events>
+		<WorkUnit Name="Default Work Unit" ID="{01174776-9831-448F-8C67-C06AD77252EC}" PersistMode="Standalone">
+			<ChildrenList>
+				<Event Name="TurretStartMove" ID="{00BF49D6-7735-40A1-807F-DE31DAEFA1DD}">
+					<ChildrenList>
+						<Action Name="" ID="{85CD955D-A2D9-4909-8089-CD8B50D71DDC}" ShortID="884510239">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="TurretStartMove" ID="{10CB322B-410B-4EBF-8D40-E8E022060A33}" WorkUnitID="{2AACF01C-92B0-4CA2-BDA9-77952BFFACC0}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="TurretStopMove" ID="{EE6E8941-C443-4D8C-9720-8FA6824335E8}">
+					<ChildrenList>
+						<Action Name="" ID="{64E274ED-8959-4AD6-A056-724F4B2339C7}" ShortID="1025580138">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="TurretStopMove" ID="{7F8A5ABD-FF35-4266-847A-5282BA2ECC4C}" WorkUnitID="{2AACF01C-92B0-4CA2-BDA9-77952BFFACC0}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="PlayTurretMoveloop" ID="{85AF8E90-960A-4926-8249-23E21E1D7B4B}">
+					<ChildrenList>
+						<Action Name="" ID="{ED0AE468-8A6C-48B7-92CB-140AA1D8105F}" ShortID="627338683">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="TankTurretMoveLoop_01" ID="{33B5DE43-5245-4DCE-81AB-BE0C60A4AF08}" WorkUnitID="{2AACF01C-92B0-4CA2-BDA9-77952BFFACC0}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Tank_fire" ID="{BB8F2F5D-524C-4B36-8694-81A4A9F1F51A}">
+					<ChildrenList>
+						<Action Name="" ID="{73DF73C0-59B9-4A61-AB93-100DE532D5CE}" ShortID="343420243">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="FireCannon" ID="{0A4CB0DD-F0B7-4EFE-8644-D36D8EB34520}" WorkUnitID="{2AACF01C-92B0-4CA2-BDA9-77952BFFACC0}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+			</ChildrenList>
+		</WorkUnit>
+	</Events>
+</WwiseDocument>

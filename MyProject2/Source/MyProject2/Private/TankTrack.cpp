@@ -5,5 +5,5 @@
 void UTankTrack::setThrottle(float Throttle)
 {
 	auto Name = GetName();
-	UE_LOG(LogTemp,Warning,TEXT("%f throttle: %f"), *Name, Throttle)
+	//UE_LOG(LogTemp,Warning,TEXT("%f throttle: %f"), *Name, Throttle)
 }

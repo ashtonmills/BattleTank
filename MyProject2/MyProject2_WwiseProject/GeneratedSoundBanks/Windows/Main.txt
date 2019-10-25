@@ -1,0 +1,14 @@
+Event	ID	Name			Wwise Object Path	Notes
+	297703765	TankFire			\Default Work Unit\TankFire	
+	2366629956	TankturretStopMove			\Default Work Unit\TankturretStopMove	
+	4031903226	TankTurretStartMove			\Default Work Unit\TankTurretStartMove	
+
+In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
+	11880792	TurretStopMove_04	E:\Projects\PersonalLearning\BattleTank\MyProject2\MyProject2_WwiseProject\.cache\Windows\SFX\TurretStopMove_04_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\TankTurret\TankTurretStopMove\TurretStopMove_04		346700
+	89600031	TurretStopMove_01	E:\Projects\PersonalLearning\BattleTank\MyProject2\MyProject2_WwiseProject\.cache\Windows\SFX\TurretStopMove_01_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\TankTurret\TankTurretStopMove\TurretStopMove_01		244204
+	163425080	TurretStopMove_02	E:\Projects\PersonalLearning\BattleTank\MyProject2\MyProject2_WwiseProject\.cache\Windows\SFX\TurretStopMove_02_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\TankTurret\TankTurretStopMove\TurretStopMove_02		261156
+	216737451	TurretStartMove_01	E:\Projects\PersonalLearning\BattleTank\MyProject2\MyProject2_WwiseProject\.cache\Windows\SFX\TurretStartMove_01_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\TankTurret\TankTurretStartMove\TurretStartMove_01		307796
+	599337074	CannonTank GUNS02_36_1	E:\Projects\PersonalLearning\BattleTank\MyProject2\MyProject2_WwiseProject\.cache\Windows\SFX\CannonTank GUNS02_36_1_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\TankTurret\TankFire\CannonTank GUNS02_36_1		1347288
+	617270310	TurretStopMove_05	E:\Projects\PersonalLearning\BattleTank\MyProject2\MyProject2_WwiseProject\.cache\Windows\SFX\TurretStopMove_05_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\TankTurret\TankTurretStopMove\TurretStopMove_05		345576
+	756123999	TurretStopMove_03	E:\Projects\PersonalLearning\BattleTank\MyProject2\MyProject2_WwiseProject\.cache\Windows\SFX\TurretStopMove_03_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\TankTurret\TankTurretStopMove\TurretStopMove_03		308176
+

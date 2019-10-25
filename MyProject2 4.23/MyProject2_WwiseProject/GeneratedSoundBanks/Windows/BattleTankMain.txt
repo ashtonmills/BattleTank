@@ -1,0 +1,15 @@
+Event	ID	Name			Wwise Object Path	Notes
+	3524961864	TurretStopMove			\Default Work Unit\TurretStopMove	
+	3565692484	PlayTurretMoveloop			\Default Work Unit\PlayTurretMoveloop	
+	3902941798	TurretStartMove			\Default Work Unit\TurretStartMove	
+	4083953352	Tank_fire			\Default Work Unit\Tank_fire	
+
+In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
+	65058905	TurretStopMove_04	E:\Projects\PersonalLearning\BattleTank\MyProject2\MyProject2_WwiseProject\.cache\Windows\SFX\TurretStopMove_04_7472DE9D.wem		\Actor-Mixer Hierarchy\Default Work Unit\TankMovement\TurretMovement\TurretStopMove\TurretStopMove_04		179316
+	100857941	TurretStartMove_01	E:\Projects\PersonalLearning\BattleTank\MyProject2\MyProject2_WwiseProject\.cache\Windows\SFX\TurretStartMove_01_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\TankMovement\TurretMovement\TurretStartMove\TurretStartMove_01		307796
+	148751005	CannonTank GUNS02_36_1	E:\Projects\PersonalLearning\BattleTank\MyProject2\MyProject2_WwiseProject\.cache\Windows\SFX\CannonTank GUNS02_36_1_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Tank_Combat\FireCannon\CannonTank GUNS02_36_1		1347288
+	158686210	TankTurretMoveLoop_01	E:\Projects\PersonalLearning\BattleTank\MyProject2\MyProject2_WwiseProject\.cache\Windows\SFX\TankTurretMoveLoop_01_D79FB2B7.wem		\Actor-Mixer Hierarchy\Default Work Unit\TankMovement\TankTurretMoveLoop_01		1091680
+	703900340	TurretStopMove_01	E:\Projects\PersonalLearning\BattleTank\MyProject2\MyProject2_WwiseProject\.cache\Windows\SFX\TurretStopMove_01_1D58B535.wem		\Actor-Mixer Hierarchy\Default Work Unit\TankMovement\TurretMovement\TurretStopMove\TurretStopMove_01		138436
+	718717252	TurretStopMove_03	E:\Projects\PersonalLearning\BattleTank\MyProject2\MyProject2_WwiseProject\.cache\Windows\SFX\TurretStopMove_03_04B529D2.wem		\Actor-Mixer Hierarchy\Default Work Unit\TankMovement\TurretMovement\TurretStopMove\TurretStopMove_03		187888
+	974924951	TurretStopMove_02	E:\Projects\PersonalLearning\BattleTank\MyProject2\MyProject2_WwiseProject\.cache\Windows\SFX\TurretStopMove_02_3FB28447.wem		\Actor-Mixer Hierarchy\Default Work Unit\TankMovement\TurretMovement\TurretStopMove\TurretStopMove_02		146704
+

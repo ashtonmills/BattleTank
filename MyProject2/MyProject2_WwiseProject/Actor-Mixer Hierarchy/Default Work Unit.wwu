@@ -1,6 +1,209 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WwiseDocument Type="WorkUnit" ID="{2AACF01C-92B0-4CA2-BDA9-77952BFFACC0}" SchemaVersion="94">
 	<AudioObjects>
-		<WorkUnit Name="Default Work Unit" ID="{2AACF01C-92B0-4CA2-BDA9-77952BFFACC0}" PersistMode="Standalone"/>
+		<WorkUnit Name="Default Work Unit" ID="{2AACF01C-92B0-4CA2-BDA9-77952BFFACC0}" PersistMode="Standalone">
+			<ChildrenList>
+				<ActorMixer Name="TankTurret" ID="{00A88157-8DA2-4520-AF28-D4BC650B42E2}" ShortID="669332814">
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{9F8E41FF-DAFA-4455-9048-7628779AFB3F}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{FA5EC4E1-8792-4018-8F83-C3CEBE559B47}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<Sound Name="TankTurretMoveLoop_01" ID="{45ADDCE3-B53E-4A0E-9C5A-FEE2E1D3CE2D}" ShortID="76486523">
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{9F8E41FF-DAFA-4455-9048-7628779AFB3F}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{FA5EC4E1-8792-4018-8F83-C3CEBE559B47}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="TankTurretMoveLoop_01" ID="{9F43705E-93C8-4057-AEA1-60DD9460FC1F}" ShortID="899113679">
+									<Language>SFX</Language>
+									<AudioFile>TankTurretMoveLoop_01.wav</AudioFile>
+								</AudioFileSource>
+							</ChildrenList>
+							<ActiveSourceList>
+								<ActiveSource Name="TankTurretMoveLoop_01" ID="{9F43705E-93C8-4057-AEA1-60DD9460FC1F}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+						<RandomSequenceContainer Name="TankTurretStartMove" ID="{41BF3C99-AEE0-4312-9D6D-0EC8912F50D4}" ShortID="679384811">
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{9F8E41FF-DAFA-4455-9048-7628779AFB3F}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{FA5EC4E1-8792-4018-8F83-C3CEBE559B47}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<Sound Name="TurretStartMove_01" ID="{0F2107C3-6237-40C9-B2B7-3A99DE5AE2B5}" ShortID="602268223">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{9F8E41FF-DAFA-4455-9048-7628779AFB3F}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{FA5EC4E1-8792-4018-8F83-C3CEBE559B47}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="TurretStartMove_01" ID="{FC9EE79D-4F92-425E-933F-A1EBC5E8D909}" ShortID="216737451">
+											<Language>SFX</Language>
+											<AudioFile>TurretStartMove_01.wav</AudioFile>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="TurretStartMove_01" ID="{FC9EE79D-4F92-425E-933F-A1EBC5E8D909}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+							</ChildrenList>
+						</RandomSequenceContainer>
+						<RandomSequenceContainer Name="TankTurretStopMove" ID="{74411C70-C82A-40D3-86F8-89114E8DD48E}" ShortID="990102496">
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{9F8E41FF-DAFA-4455-9048-7628779AFB3F}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{FA5EC4E1-8792-4018-8F83-C3CEBE559B47}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<Sound Name="TurretStopMove_01" ID="{3427E559-357D-4842-BC41-8B1F28FAB420}" ShortID="336783216">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{9F8E41FF-DAFA-4455-9048-7628779AFB3F}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{FA5EC4E1-8792-4018-8F83-C3CEBE559B47}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="TurretStopMove_01" ID="{0BB90040-4273-444D-86B9-E5417BC118AD}" ShortID="89600031">
+											<Language>SFX</Language>
+											<AudioFile>TurretStopMove_01.wav</AudioFile>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="TurretStopMove_01" ID="{0BB90040-4273-444D-86B9-E5417BC118AD}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="TurretStopMove_02" ID="{5EE734AF-7B15-4048-8F76-5E8980537F5B}" ShortID="43685600">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{9F8E41FF-DAFA-4455-9048-7628779AFB3F}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{FA5EC4E1-8792-4018-8F83-C3CEBE559B47}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="TurretStopMove_02" ID="{A29CC705-D35D-4E3D-8E0A-C6004CB8EF72}" ShortID="163425080">
+											<Language>SFX</Language>
+											<AudioFile>TurretStopMove_02.wav</AudioFile>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="TurretStopMove_02" ID="{A29CC705-D35D-4E3D-8E0A-C6004CB8EF72}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="TurretStopMove_03" ID="{957C12CA-20EA-4C48-9B8C-F939C1F0DF50}" ShortID="1007332408">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{9F8E41FF-DAFA-4455-9048-7628779AFB3F}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{FA5EC4E1-8792-4018-8F83-C3CEBE559B47}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="TurretStopMove_03" ID="{E1B222AF-E666-4853-B9D1-3468D9B5A7E9}" ShortID="756123999">
+											<Language>SFX</Language>
+											<AudioFile>TurretStopMove_03.wav</AudioFile>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="TurretStopMove_03" ID="{E1B222AF-E666-4853-B9D1-3468D9B5A7E9}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="TurretStopMove_05" ID="{2692CEDB-AB91-4285-9268-7D9BEB053B6B}" ShortID="1051759560">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{9F8E41FF-DAFA-4455-9048-7628779AFB3F}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{FA5EC4E1-8792-4018-8F83-C3CEBE559B47}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="TurretStopMove_05" ID="{5776D5DB-C035-4C07-A7A6-3E400DE86CF7}" ShortID="617270310">
+											<Language>SFX</Language>
+											<AudioFile>TurretStopMove_05.wav</AudioFile>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="TurretStopMove_05" ID="{5776D5DB-C035-4C07-A7A6-3E400DE86CF7}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="TurretStopMove_04" ID="{AE9B1B06-B561-464A-B9AD-77F063F387CA}" ShortID="871992077">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{9F8E41FF-DAFA-4455-9048-7628779AFB3F}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{FA5EC4E1-8792-4018-8F83-C3CEBE559B47}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="TurretStopMove_04" ID="{A9938CBE-19A4-437A-B201-69D9E00FD441}" ShortID="11880792">
+											<Language>SFX</Language>
+											<AudioFile>TurretStopMove_04.wav</AudioFile>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="TurretStopMove_04" ID="{A9938CBE-19A4-437A-B201-69D9E00FD441}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+							</ChildrenList>
+						</RandomSequenceContainer>
+						<RandomSequenceContainer Name="TankFire" ID="{88BA42E7-C761-4205-8605-7060761F6823}" ShortID="982329170">
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{9F8E41FF-DAFA-4455-9048-7628779AFB3F}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{FA5EC4E1-8792-4018-8F83-C3CEBE559B47}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<Sound Name="CannonTank GUNS02_36_1" ID="{5996DB74-63A0-4F47-861B-05DAA1314F21}" ShortID="868102822">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{9F8E41FF-DAFA-4455-9048-7628779AFB3F}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{FA5EC4E1-8792-4018-8F83-C3CEBE559B47}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="CannonTank GUNS02_36_1" ID="{3F58A52D-FBA3-47F8-A7D8-6CF38D987CC3}" ShortID="599337074">
+											<Language>SFX</Language>
+											<AudioFile>CannonTank GUNS02_36_1.wav</AudioFile>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="CannonTank GUNS02_36_1" ID="{3F58A52D-FBA3-47F8-A7D8-6CF38D987CC3}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+							</ChildrenList>
+						</RandomSequenceContainer>
+					</ChildrenList>
+				</ActorMixer>
+			</ChildrenList>
+		</WorkUnit>
 	</AudioObjects>
 </WwiseDocument>

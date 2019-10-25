@@ -2878,14 +2878,14 @@ bool FAkAudioDevice::EnsureInitialized()
 	// Init dummy game object
 	AK::SoundEngine::RegisterGameObj(DUMMY_GAMEOBJ, "Unreal Global");
 
-#if WITH_EDITOR
-	if (!IsRunningGame())
-	{
-		AkGameObjectID tempID = DUMMY_GAMEOBJ;
-		AK::SoundEngine::SetListeners(DUMMY_GAMEOBJ, &tempID, 1);
-	}
-#endif
-
+//#if WITH_EDITOR
+//	if (!IsRunningGame())
+//	{
+//		AkGameObjectID tempID = DUMMY_GAMEOBJ;
+//		AK::SoundEngine::SetListeners(DUMMY_GAMEOBJ, &tempID, 1);
+//	}
+//#endif
+//
 	m_bSoundEngineInitialized = true;
 
 	AkBankManager = new FAkBankManager;

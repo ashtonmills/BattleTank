@@ -1,0 +1,3 @@
+BattleTankMain	"TurretStartMove"
+BattleTankMain	"PlayTurretMoveloop"
+BattleTankMain	"TurretStopMove"
