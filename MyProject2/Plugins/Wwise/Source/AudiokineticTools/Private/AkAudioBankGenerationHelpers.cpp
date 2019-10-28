@@ -650,8 +650,11 @@ namespace WwiseBnkGenHelper
 	TSet<FString> GetSupportedPlatforms()
 	{
 		TSet<FString> SupportedPlatforms;
-
+#if UE_4_23_OR_LATER
+		for (const PlatformInfo::FPlatformInfo& Info : PlatformInfo::GetPlatformInfoArray())
+#else
 		for (const PlatformInfo::FPlatformInfo& Info : PlatformInfo::EnumeratePlatformInfoArray())
+#endif
 		{
 			if (Info.IsVanilla() && (Info.PlatformType == PlatformInfo::EPlatformType::Game) && (Info.PlatformInfoName != TEXT("AllDesktop")))
 			{

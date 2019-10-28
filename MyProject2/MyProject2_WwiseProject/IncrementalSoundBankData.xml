@@ -19,12 +19,12 @@
 			<Language ID="393239870">
 				<File Name="BattleTankMain" Hash="1780920048" Timestamp="1571653678"/>
 				<File Name="Init" Hash="1182415902" Timestamp="1572253330"/>
-				<File Name="Main" Hash="567947005" Timestamp="1572253330"/>
+				<File Name="Main" Hash="2506479374" Timestamp="1572254774"/>
 			</Language>
 		</Banks>
 		<XMLInfo>
 			<Language ID="-1">
-				<File Name="" Hash="3794770109" Timestamp="1572253330"/>
+				<File Name="" Hash="3794770109" Timestamp="1572254774"/>
 			</Language>
 		</XMLInfo>
 	</Platform>

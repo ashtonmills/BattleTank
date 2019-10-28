@@ -80,6 +80,8 @@ void UAkWwiseTree::SynchronizeProperties()
 void UAkWwiseTree::ReleaseSlateResources(bool bReleaseChildren)
 {
 	Super::ReleaseSlateResources(bReleaseChildren);
+
+	WaapiPicker.Reset();
 }
 
 void UAkWwiseTree::TreeSelectionChanged(TSharedPtr< FWwiseTreeItem > TreeItem, ESelectInfo::Type SelectInfo)

@@ -134,6 +134,14 @@ void UAkItemBoolProperties::SetSearchText(const FString& newText)
 	WwiseProperties->SetSearchText(newText);
 }
 
+void UAkItemBoolProperties::ReleaseSlateResources(bool bReleaseChildren)
+{
+	Super::ReleaseSlateResources(bReleaseChildren);
+
+	PropertyTextBlock.Reset();
+	WwiseProperties.Reset();
+}
+
 #if WITH_EDITOR
 const FText UAkItemBoolProperties::GetPaletteCategory()
 {

@@ -134,7 +134,11 @@ uint32 FAkWaapiClientConnectionHandler::Run()
 				}
 				else
 				{
-					UE_LOG(LogAkWaapiClient, Warning, TEXT("Failed to connect to WAAPI client on local host. Trying again in %i seconds."), ReconnectDelay.GetValue());
+					if (LogOutputCount.GetValue() < 7)
+					{
+						UE_LOG(LogAkWaapiClient, Warning, TEXT("Failed to connect to WAAPI client on local host. Trying again in %i seconds."), ReconnectDelay.GetValue());
+						LogOutputCount.Increment();
+					}
 				}
 				/** Delay the next reconnection attempt according to the ReconnectDelay value. */
 				const int iCurrentDelay = ReconnectDelay.GetValue();
@@ -180,6 +184,7 @@ void FAkWaapiClientConnectionHandler::ResetReconnectionDelay()
 	if (bReconnect && !m_Client.AppIsExiting() && !m_Client.IsDisconnecting())
 	{
 		ReconnectDelay.Set(2);
+		LogOutputCount.Set(0);
 	}
 }
 
@@ -434,7 +439,7 @@ void FAkWaapiClient::ConnectionEstablished()
 	if (m_AkWaapiClient != nullptr)
 	{
 		//We check if the correct project is loaded on a background thread. If it is, we broadcast OnProjectLoaded.
-		AsyncTask(ENamedThreads::AnyBackgroundThreadNormalTask, [this]()
+		AsyncTask(ENamedThreads::GameThread, [this]()
 		{
 			m_Impl->bProjectLoaded = CheckProjectLoaded();
 			if (m_Impl->bProjectLoaded)
@@ -446,7 +451,7 @@ void FAkWaapiClient::ConnectionEstablished()
 		//We also subscribe to ak::wwise::core::project::loaded in order to check the project whenever one is loaded.
 		auto projectLoadedCallback = WampEventCallback::CreateLambda([this](uint64_t id, TSharedPtr<FJsonObject> in_UEJsonObject)
 		{
-			AsyncTask(ENamedThreads::AnyBackgroundThreadNormalTask, [this, id, in_UEJsonObject]()
+			AsyncTask(ENamedThreads::GameThread, [this, id, in_UEJsonObject]()
 			{
 				m_Impl->bProjectLoaded = CheckProjectLoaded(true);
 				if (m_Impl->bProjectLoaded)
@@ -468,7 +473,10 @@ void FAkWaapiClient::ConnectionEstablished()
 		//And we need to subscribe to ak::wwise::core::project::postClosed such that we are able to re-connect to WAAPI (for example if Wwise is closed then opened again).
 		auto projectClosedCallback = WampEventCallback::CreateLambda([this](uint64_t id, TSharedPtr<FJsonObject> in_UEJsonObject)
 		{
-			BroadcastConnectionLost();
+			AsyncTask(ENamedThreads::GameThread, [this]()
+			{
+				BroadcastConnectionLost();
+			});
 		});
 		TSharedPtr<FJsonObject> projectClosedSubscriptionResult = MakeShareable(new FJsonObject());
 		TSharedRef<FJsonObject> projectClosedOptions = MakeShareable(new FJsonObject());

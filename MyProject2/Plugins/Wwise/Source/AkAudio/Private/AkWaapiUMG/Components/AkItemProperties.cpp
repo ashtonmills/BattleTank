@@ -139,6 +139,13 @@ void UAkItemProperties::SetSearchText(const FString& newText)
 	WwiseProperties->SetSearchText(newText);
 }
 
+void UAkItemProperties::ReleaseSlateResources(bool bReleaseChildren)
+{
+	Super::ReleaseSlateResources(bReleaseChildren);
+
+	PropertyTextBlock.Reset();
+	WwiseProperties.Reset();
+}
 
 #if WITH_EDITOR
 

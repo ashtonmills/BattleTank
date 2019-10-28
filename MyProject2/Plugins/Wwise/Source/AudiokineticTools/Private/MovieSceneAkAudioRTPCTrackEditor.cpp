@@ -363,8 +363,14 @@ bool FMovieSceneAkAudioRTPCTrackEditor::SupportsSequence(UMovieSceneSequence* In
 }
 
 
+#if UE_4_23_OR_LATER
+void FMovieSceneAkAudioRTPCTrackEditor::BuildObjectBindingTrackMenu(FMenuBuilder& MenuBuilder, const TArray<FGuid>& ObjectBindings, const UClass* ObjectClass)
+{
+	auto ObjectBinding = ObjectBindings[0];
+#else
 void FMovieSceneAkAudioRTPCTrackEditor::BuildObjectBindingTrackMenu(FMenuBuilder& MenuBuilder, const FGuid& ObjectBinding, const UClass* ObjectClass)
 {
+#endif
 	if (!ObjectClass->IsChildOf(AActor::StaticClass()) && !ObjectClass->IsChildOf(USceneComponent::StaticClass()))
 	{
 		return;

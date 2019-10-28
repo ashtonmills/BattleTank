@@ -21,7 +21,7 @@ under the Apache License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES
 OR CONDITIONS OF ANY KIND, either express or implied. See the Apache License for
 the specific language governing permissions and limitations under the License.
 
-  Version: v2019.1.3  Build: 7048
+  Version: v2019.1.4  Build: 7065
   Copyright (c) 2006-2019 Audiokinetic Inc.
 *******************************************************************************/
 
@@ -49,12 +49,12 @@ namespace AK
 			/// <summary>
 			/// Wwise SDK sub-minor version
 			/// </summary>
-            public const int SubMinor = 3;
+            public const int SubMinor = 4;
 
 			/// <summary>
 			/// Wwise SDK build number
 			/// </summary>
-            public const int Build = 7048;
+            public const int Build = 7065;
 			
 			/// <summary>
 			/// Wwise SDK build nickname
@@ -79,7 +79,7 @@ namespace AK
             /// <summary>
             /// String representing the Wwise SDK version
             /// </summary>
-            public const string AssemblyVersion = "2019.1.3.7048";
+            public const string AssemblyVersion = "2019.1.4.7065";
 
 			/// <summary>
 			/// String representing the Wwise SDK copyright notice

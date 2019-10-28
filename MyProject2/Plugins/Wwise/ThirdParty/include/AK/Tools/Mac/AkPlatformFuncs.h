@@ -21,7 +21,7 @@ under the Apache License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES
 OR CONDITIONS OF ANY KIND, either express or implied. See the Apache License for
 the specific language governing permissions and limitations under the License.
 
-  Version: v2019.1.3  Build: 6590
+  Version: v2019.1.4  Build: 7065
   Copyright (c) 2006-2019 Audiokinetic Inc.
 *******************************************************************************/
 
@@ -255,4 +255,6 @@ namespace AKPLATFORM
 #if __BIGGEST_ALIGNMENT__ < AK_SIMD_ALIGNMENT
 	#define AkAllocaSIMD( _size_ ) __builtin_alloca_with_align( _size_, AK_SIMD_ALIGNMENT*8 )
 #endif
+
+	#define AK_DYNAMIC_LIBRARY_EXTENSION	(".dylib")
 }

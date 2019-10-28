@@ -21,7 +21,7 @@ under the Apache License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES
 OR CONDITIONS OF ANY KIND, either express or implied. See the Apache License for
 the specific language governing permissions and limitations under the License.
 
-  Version: v2019.1.3  Build: 7048
+  Version: v2019.1.4  Build: 7065
   Copyright (c) 2006-2019 Audiokinetic Inc.
 *******************************************************************************/
 
@@ -506,7 +506,8 @@ namespace AK
 		/// - AK_FileNotFound if the DLL is not found in the OS path or if it has extraneous dependencies not found.  
 		/// - AK_InvalidFile if the symbol g_pAKPluginList is not exported by the dynamic library
 		AK_EXTERNAPIFUNC( AKRESULT, RegisterPluginDLL ) (
-			const AkOSChar* in_DllName					///< Name of the DLL to load, without "lib" prefix or extension.  
+			const AkOSChar* in_DllName,					///< Name of the DLL to load, without "lib" prefix or extension.  
+			const AkOSChar* in_DllPath = NULL			///< Optional path to the DLL. Will override szPLuginDLLPath that was set in AkInitSettings.
 			);
 		
 		/// Registers a codec type with the sound engine and set the callback functions to create the 
@@ -2906,15 +2907,17 @@ namespace AK
 			AkGameObjectID in_emitterGameObj	///< Emitter game object.
 			);
 
-		/// Sets a listener's spatialization parameters. This let you define listener-specific 
+		/// Sets a listener's spatialization parameters. This lets you define listener-specific 
 		/// volume offsets for each audio channel.
 		/// If \c in_bSpatialized is false, only \c in_pVolumeOffsets is used for this listener (3D positions 
 		/// have no effect on the speaker distribution). Otherwise, \c in_pVolumeOffsets is added to the speaker
 		/// distribution computed for this listener.
 		/// Use helper functions of \c AK::SpeakerVolumes to manipulate the vector of volume offsets in_pVolumeOffsets.
 		/// 
-		/// If a sound is mixed into a bus that has a different speaker configuration than in_channelConfig,
+		/// \remarks
+		/// - If a sound is mixed into a bus that has a different speaker configuration than in_channelConfig,
 		/// standard up/downmix rules apply.
+		/// - Sounds with 3D Spatialization set to None will not be affected by these parameters.
 		/// \return \c AK_Success if message was successfully posted to sound engine queue, \c AK_Fail otherwise.
 		/// \sa 
 		/// - \ref soundengine_listeners_spatial

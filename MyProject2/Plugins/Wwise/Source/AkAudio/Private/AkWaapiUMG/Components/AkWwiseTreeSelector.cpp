@@ -113,6 +113,11 @@ void UAkWwiseTreeSelector::SynchronizeProperties()
 void UAkWwiseTreeSelector::ReleaseSlateResources(bool bReleaseChildren)
 {
 	Super::ReleaseSlateResources(bReleaseChildren);
+
+	ItemTextBlock.Reset();
+	WaapiPicker.Reset();
+	PickerButton.Reset();
+	PickerMenu.Reset();
 }
 
 void UAkWwiseTreeSelector::TreeSelectionChanged(TSharedPtr< FWwiseTreeItem > TreeItem, ESelectInfo::Type SelectInfo)

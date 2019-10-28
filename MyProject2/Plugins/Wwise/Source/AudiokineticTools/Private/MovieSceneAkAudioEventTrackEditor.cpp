@@ -1161,8 +1161,14 @@ void FMovieSceneAkAudioEventTrackEditor::OnAudioAssetSelected(const FAssetData& 
 	GetSequencer()->NotifyMovieSceneDataChanged(EMovieSceneDataChangeType::MovieSceneStructureItemAdded);
 }
 
+#if UE_4_23_OR_LATER
+void FMovieSceneAkAudioEventTrackEditor::BuildObjectBindingTrackMenu(FMenuBuilder& MenuBuilder, const TArray<FGuid>& ObjectBindings, const UClass* ObjectClass)
+{
+	auto ObjectBinding = ObjectBindings[0];
+#else
 void FMovieSceneAkAudioEventTrackEditor::BuildObjectBindingTrackMenu(FMenuBuilder& MenuBuilder, const FGuid& ObjectBinding, const UClass* ObjectClass)
 {
+#endif
 	if (ObjectClass->IsChildOf(AActor::StaticClass()) || ObjectClass->IsChildOf(USceneComponent::StaticClass()))
 	{
 		MenuBuilder.AddMenuEntry(

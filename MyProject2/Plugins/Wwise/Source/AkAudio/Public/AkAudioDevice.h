@@ -991,6 +991,11 @@ public:
 	void StopProfilerCapture();
 
 	/**
+	 * Allows to register a Wwise plugin from a DLL name and path
+	 */
+	AKRESULT RegisterPluginDLL(const FString& in_DllName, const FString& in_DllPath);
+
+	/**
 	* Gets the path where the SoundBanks are located on disk
 	*/
 	FString GetBasePath();

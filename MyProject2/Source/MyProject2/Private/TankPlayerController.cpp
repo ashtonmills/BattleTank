@@ -38,6 +38,7 @@ void ATankPlayerController::BeginPlay()
 		else
 		{
 			UE_LOG(LogTemp, Warning, TEXT("PlayerAkComponent not set"));
+			//test comment
 		}
 
 	}

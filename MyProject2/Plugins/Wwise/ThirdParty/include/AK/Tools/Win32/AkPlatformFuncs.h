@@ -21,7 +21,7 @@ under the Apache License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES
 OR CONDITIONS OF ANY KIND, either express or implied. See the Apache License for
 the specific language governing permissions and limitations under the License.
 
-  Version: v2019.1.3  Build: 7048
+  Version: v2019.1.4  Build: 7065
   Copyright (c) 2006-2019 Audiokinetic Inc.
 *******************************************************************************/
 
@@ -574,6 +574,8 @@ namespace AKPLATFORM
 
 	// Use with AkOSChar.
 	#define AK_PATH_SEPARATOR	(L"\\")
+	#define AK_LIBRARY_PREFIX	(L"")
+	#define AK_DYNAMIC_LIBRARY_EXTENSION	(L".dll")
 
 	#if defined(AK_ENABLE_PERF_RECORDING)
 	

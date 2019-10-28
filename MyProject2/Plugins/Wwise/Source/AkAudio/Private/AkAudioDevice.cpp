@@ -313,6 +313,8 @@ bool FAkAudioDevice::Init( void )
 		}
 	);
 
+	FCoreDelegates::OnPostEngineInit.AddLambda([this] { LoadAllReferencedBanks(); });
+
 #if WITH_EDITOR
 #if UE_4_19_OR_LATER
 	FEditorSupportDelegates::PrepareToCleanseEditorObject.AddLambda
@@ -2878,21 +2880,19 @@ bool FAkAudioDevice::EnsureInitialized()
 	// Init dummy game object
 	AK::SoundEngine::RegisterGameObj(DUMMY_GAMEOBJ, "Unreal Global");
 
-//#if WITH_EDITOR
-//	if (!IsRunningGame())
-//	{
-//		AkGameObjectID tempID = DUMMY_GAMEOBJ;
-//		AK::SoundEngine::SetListeners(DUMMY_GAMEOBJ, &tempID, 1);
-//	}
-//#endif
-//
+#if WITH_EDITOR
+	if (!IsRunningGame())
+	{
+		AkGameObjectID tempID = DUMMY_GAMEOBJ;
+		AK::SoundEngine::SetListeners(DUMMY_GAMEOBJ, &tempID, 1);
+	}
+#endif
+
 	m_bSoundEngineInitialized = true;
 
 	AkBankManager = new FAkBankManager;
 
 	CallbackInfoPool = new AkCallbackInfoPool;
-
-	LoadAllReferencedBanks();
 
 	// Go get the max number of Aux busses
 	MaxAuxBus = AK_MAX_AUX_PER_OBJ;
@@ -3118,4 +3118,19 @@ void FAkAudioDevice::StopProfilerCapture()
 	}
 }
 
+AKRESULT FAkAudioDevice::RegisterPluginDLL(const FString& in_DllName, const FString& in_DllPath)
+{
+	AkOSChar* szPath = nullptr;
+
+	if (!in_DllPath.IsEmpty())
+	{
+		auto Length = in_DllPath.Len() + 1;
+		szPath = new AkOSChar[Length];
+		AKPLATFORM::SafeStrCpy(szPath, TCHAR_TO_AK(*in_DllPath), Length);
+	}
+
+	AKRESULT eResult = AK::SoundEngine::RegisterPluginDLL(TCHAR_TO_AK(*in_DllName), szPath);
+	delete[] szPath;
+	return eResult;
+}
 // end

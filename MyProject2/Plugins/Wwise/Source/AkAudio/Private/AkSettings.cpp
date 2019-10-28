@@ -60,17 +60,20 @@ void UAkSettings::PostInitProperties()
 		if (!WwiseWindowsInstallationPath_DEPRECATED.Path.IsEmpty())
 		{
 			AkSettingsPerUser->WwiseWindowsInstallationPath = WwiseWindowsInstallationPath_DEPRECATED;
+			WwiseWindowsInstallationPath_DEPRECATED.Path.Reset();
 			didChanges = true;
 		}
 
 		if (!WwiseMacInstallationPath_DEPRECATED.FilePath.IsEmpty())
 		{
 			AkSettingsPerUser->WwiseMacInstallationPath = WwiseMacInstallationPath_DEPRECATED;
+			WwiseMacInstallationPath_DEPRECATED.FilePath.Reset();
 			didChanges = true;
 		}
 
 		if (didChanges)
 		{
+			UpdateDefaultConfigFile();
 			AkSettingsPerUser->SaveConfig();
 		}
 	}

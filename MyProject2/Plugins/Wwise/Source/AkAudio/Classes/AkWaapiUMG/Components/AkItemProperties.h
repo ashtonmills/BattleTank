@@ -90,6 +90,10 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintCosmetic, Category = "Audiokinetic")
 	void SetSearchText(const FString& newText);
 
+	// UVisual interface
+	virtual void ReleaseSlateResources(bool bReleaseChildren) override;
+	// End of UVisual interface
+
 #if WITH_EDITOR
 	virtual const FText GetPaletteCategory() override;
 #endif

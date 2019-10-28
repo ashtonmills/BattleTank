@@ -61,6 +61,7 @@ private:
 	FThreadSafeBool ThreadShouldExit = false;
     FThreadSafeCounter ReconnectDelay = 2;
     FThreadSafeCounter ConnectionMonitorDelay = 7;
+	FThreadSafeCounter LogOutputCount = 0;
     int m_iMaxReconnectDelay = 32;
     FEvent* WaitEvent;
     FCriticalSection AkSettingsSection;

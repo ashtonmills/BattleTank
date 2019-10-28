@@ -8,8 +8,6 @@ public class AkAudio : ModuleRules
 {
 	string akLibPath = string.Empty;
 
-	bool TargetPlatformIsNintendoSwitch = false;
-
 #if WITH_FORWARDED_MODULE_RULES_CTOR
     private void AddWwiseLib(ReadOnlyTargetRules Target, string in_libName)
 #else
@@ -17,9 +15,9 @@ public class AkAudio : ModuleRules
 #endif
 	{
 #if UE_4_20_OR_LATER
-		if (Target.Platform == UnrealTargetPlatform.PS4 || Target.Platform == UnrealTargetPlatform.Android || Target.Platform == UnrealTargetPlatform.Lumin || Target.Platform == UnrealTargetPlatform.Linux || Target.Platform == UnrealTargetPlatform.IOS || TargetPlatformIsNintendoSwitch)
+		if (Target.Platform == UnrealTargetPlatform.PS4 || Target.Platform == UnrealTargetPlatform.Android || Target.Platform == UnrealTargetPlatform.Lumin || Target.Platform == UnrealTargetPlatform.Linux || Target.Platform == UnrealTargetPlatform.IOS || Target.Platform == UnrealTargetPlatform.Switch)
 #else
-		if (Target.Platform == UnrealTargetPlatform.PS4 || Target.Platform == UnrealTargetPlatform.Android || Target.Platform == UnrealTargetPlatform.Linux || Target.Platform == UnrealTargetPlatform.IOS || TargetPlatformIsNintendoSwitch)
+		if (Target.Platform == UnrealTargetPlatform.PS4 || Target.Platform == UnrealTargetPlatform.Android || Target.Platform == UnrealTargetPlatform.Linux || Target.Platform == UnrealTargetPlatform.IOS || Target.Platform == UnrealTargetPlatform.Switch)
 #endif
 		{
 			PublicAdditionalLibraries.Add(in_libName);
@@ -37,9 +35,9 @@ public class AkAudio : ModuleRules
     private string GetPluginFullPath(string PluginName, string LibPath)
     {
 #if UE_4_20_OR_LATER
-        if (Target.Platform == UnrealTargetPlatform.Mac || Target.Platform == UnrealTargetPlatform.PS4 || Target.Platform == UnrealTargetPlatform.Android || Target.Platform == UnrealTargetPlatform.Lumin || Target.Platform == UnrealTargetPlatform.Linux || Target.Platform == UnrealTargetPlatform.IOS || TargetPlatformIsNintendoSwitch)
+        if (Target.Platform == UnrealTargetPlatform.Mac || Target.Platform == UnrealTargetPlatform.PS4 || Target.Platform == UnrealTargetPlatform.Android || Target.Platform == UnrealTargetPlatform.Lumin || Target.Platform == UnrealTargetPlatform.Linux || Target.Platform == UnrealTargetPlatform.IOS || Target.Platform == UnrealTargetPlatform.Switch)
 #else
-        if (Target.Platform == UnrealTargetPlatform.Mac || Target.Platform == UnrealTargetPlatform.PS4 || Target.Platform == UnrealTargetPlatform.Android || Target.Platform == UnrealTargetPlatform.Linux || Target.Platform == UnrealTargetPlatform.IOS || TargetPlatformIsNintendoSwitch)
+        if (Target.Platform == UnrealTargetPlatform.Mac || Target.Platform == UnrealTargetPlatform.PS4 || Target.Platform == UnrealTargetPlatform.Android || Target.Platform == UnrealTargetPlatform.Linux || Target.Platform == UnrealTargetPlatform.IOS || Target.Platform == UnrealTargetPlatform.Switch)
 #endif
         {
             return Path.Combine(LibPath, "lib" + PluginName + ".a");
@@ -159,16 +157,6 @@ public class AkAudio : ModuleRules
 #else
         TargetRules BuildConfig = UEBuildConfiguration;
 #endif
-        // Need to use Enum.Parse because Switch is not present in UE < 4.15
-        try
-        {
-			var SwitchPlatform = (UnrealTargetPlatform)Enum.Parse(typeof(UnrealTargetPlatform), "Switch");
-			if (SwitchPlatform != UnrealTargetPlatform.Unknown)
-				TargetPlatformIsNintendoSwitch = (Target.Platform == SwitchPlatform);
-		}
-		catch (Exception)
-		{
-		}
 
 		PrivateIncludePaths.AddRange(
 			new string[] {
@@ -311,7 +299,7 @@ public class AkAudio : ModuleRules
             akPlatformLibDir.Add("Android_x86_64");
             Defs.Add("__ANDROID__");
         }
-		else if (TargetPlatformIsNintendoSwitch)
+		else if (Target.Platform == UnrealTargetPlatform.Switch)
 		{
             akPlatformLibDir.Add("NX64");
             Defs.Add("NN_NINTENDO_SDK");
@@ -450,7 +438,7 @@ public class AkAudio : ModuleRules
 			AddWwiseLib(Target, "AkAACDecoder");
 		}
 
-		if (TargetPlatformIsNintendoSwitch)
+		if (Target.Platform == UnrealTargetPlatform.Switch)
 		{
 			AddWwiseLib(Target, "AkOpusNXDecoder");
 		}
