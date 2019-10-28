@@ -1,3 +1,3 @@
-Main	"TankturretStopMove"
 Main	"TankFire"
 Main	"TankTurretStartMove"
+Main	"TankturretStopMove"

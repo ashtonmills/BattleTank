@@ -4,7 +4,13 @@
 		<WorkUnit Name="Default Work Unit" ID="{2AACF01C-92B0-4CA2-BDA9-77952BFFACC0}" PersistMode="Standalone">
 			<ChildrenList>
 				<ActorMixer Name="TankTurret" ID="{00A88157-8DA2-4520-AF28-D4BC650B42E2}" ShortID="669332814">
+					<PropertyList>
+						<Property Name="3DSpatialization" Type="int16" Value="2"/>
+					</PropertyList>
 					<ReferenceList>
+						<Reference Name="Attenuation">
+							<ObjectRef Name="New Attenuation" ID="{83B110D9-E4FD-425B-926F-4AEEAC5C3058}" WorkUnitID="{C73B29E1-89B6-48FB-84E9-842FE285FBFC}"/>
+						</Reference>
 						<Reference Name="Conversion">
 							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{9F8E41FF-DAFA-4455-9048-7628779AFB3F}"/>
 						</Reference>
