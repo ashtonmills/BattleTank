@@ -46,6 +46,12 @@ void ATank::SetTurretReference(UTankTurret* TurretToSet)
 	TankAimingComponent->SetTurretReference(TurretToSet);
 }
 
+void ATank::SetAkReference(UAkComponent* AkComponentToSet)
+{
+	WwiseComponent = AkComponentToSet;
+}
+
+
 void ATank::Fire()
 {
 	if (!ProjectileBlueprint) { UE_LOG(LogTemp,Warning,TEXT("ProjectileBlueprint not assigned to tank")); return; }
@@ -59,6 +65,11 @@ void ATank::Fire()
 			);
 		Projectile->LauchProjectile(LaunchSpeed);
 		LastFireTime = FPlatformTime::Seconds();
+		if (WwiseComponent)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("WwiseComponent ptr is not null!"));
+			WwiseComponent->PostAkEventByName("TankFire");
+		}
 	}
 
 }

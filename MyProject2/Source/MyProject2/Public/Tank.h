@@ -6,6 +6,7 @@
 #include "GameFramework/Pawn.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
 #include "Runtime/CoreUObject/Public/UObject/Class.h"
+#include "AkComponent.h"
 #include "Tank.generated.h"
 
 //forward declarations
@@ -27,6 +28,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = Setup)
 	void SetTurretReference(UTankTurret* TurretToSet);
+
+	UFUNCTION(BlueprintCallable, Category = Setup)
+	void SetAkReference(UAkComponent* AkComponentToSet);
 
 	UFUNCTION(BlueprintCallable, Category = Combat)
 		void Fire();
@@ -55,6 +59,7 @@ public:
 
 private : 
 	//lcoal barrel reference for spawning projectile
+	UAkComponent* WwiseComponent =nullptr;
 	UTankBarrel* Barrel = nullptr;
 	double LastFireTime = 0;
 }

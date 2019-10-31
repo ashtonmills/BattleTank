@@ -5,12 +5,12 @@
 			<Language ID="393239870">
 				<File Name="BattleTankMain" Hash="1780920048" Timestamp="1571653678"/>
 				<File Name="Init" Hash="2279659568" Timestamp="1571923937"/>
-				<File Name="Main" Hash="567947005" Timestamp="1572253322"/>
+				<File Name="Main" Hash="3494031309" Timestamp="1572526283"/>
 			</Language>
 		</Banks>
 		<XMLInfo>
 			<Language ID="-1">
-				<File Name="" Hash="2196761276" Timestamp="1572253322"/>
+				<File Name="" Hash="2196761276" Timestamp="1572526283"/>
 			</Language>
 		</XMLInfo>
 	</Platform>
@@ -18,13 +18,13 @@
 		<Banks>
 			<Language ID="393239870">
 				<File Name="BattleTankMain" Hash="1780920048" Timestamp="1571653678"/>
-				<File Name="Init" Hash="1182415902" Timestamp="1572253330"/>
-				<File Name="Main" Hash="2506479374" Timestamp="1572254774"/>
+				<File Name="Init" Hash="1182415902" Timestamp="1572526295"/>
+				<File Name="Main" Hash="3494031309" Timestamp="1572526295"/>
 			</Language>
 		</Banks>
 		<XMLInfo>
 			<Language ID="-1">
-				<File Name="" Hash="3794770109" Timestamp="1572254774"/>
+				<File Name="" Hash="3794770109" Timestamp="1572526295"/>
 			</Language>
 		</XMLInfo>
 	</Platform>
