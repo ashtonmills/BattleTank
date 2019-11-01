@@ -20,6 +20,14 @@
 					</ReferenceList>
 					<ChildrenList>
 						<Sound Name="TankTurretMoveLoop_01" ID="{45ADDCE3-B53E-4A0E-9C5A-FEE2E1D3CE2D}" ShortID="76486523">
+							<PropertyList>
+								<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
+								<Property Name="Pitch" Type="int32">
+									<ValueList>
+										<Value>510</Value>
+									</ValueList>
+								</Property>
+							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
 									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{9F8E41FF-DAFA-4455-9048-7628779AFB3F}"/>
@@ -59,6 +67,10 @@
 									</ReferenceList>
 									<ChildrenList>
 										<AudioFileSource Name="TurretStartMove_01" ID="{FC9EE79D-4F92-425E-933F-A1EBC5E8D909}" ShortID="216737451">
+											<PropertyList>
+												<Property Name="LoopBegin" Type="Real64" Value="0"/>
+												<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+											</PropertyList>
 											<Language>SFX</Language>
 											<AudioFile>TurretStartMove_01.wav</AudioFile>
 										</AudioFileSource>
@@ -80,6 +92,13 @@
 							</ReferenceList>
 							<ChildrenList>
 								<Sound Name="TurretStopMove_01" ID="{3427E559-357D-4842-BC41-8B1F28FAB420}" ShortID="336783216">
+									<PropertyList>
+										<Property Name="Inclusion" Type="bool">
+											<ValueList>
+												<Value>False</Value>
+											</ValueList>
+										</Property>
+									</PropertyList>
 									<ReferenceList>
 										<Reference Name="Conversion">
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{9F8E41FF-DAFA-4455-9048-7628779AFB3F}"/>
@@ -99,6 +118,13 @@
 									</ActiveSourceList>
 								</Sound>
 								<Sound Name="TurretStopMove_02" ID="{5EE734AF-7B15-4048-8F76-5E8980537F5B}" ShortID="43685600">
+									<PropertyList>
+										<Property Name="Inclusion" Type="bool">
+											<ValueList>
+												<Value>False</Value>
+											</ValueList>
+										</Property>
+									</PropertyList>
 									<ReferenceList>
 										<Reference Name="Conversion">
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{9F8E41FF-DAFA-4455-9048-7628779AFB3F}"/>
@@ -118,6 +144,13 @@
 									</ActiveSourceList>
 								</Sound>
 								<Sound Name="TurretStopMove_03" ID="{957C12CA-20EA-4C48-9B8C-F939C1F0DF50}" ShortID="1007332408">
+									<PropertyList>
+										<Property Name="Inclusion" Type="bool">
+											<ValueList>
+												<Value>False</Value>
+											</ValueList>
+										</Property>
+									</PropertyList>
 									<ReferenceList>
 										<Reference Name="Conversion">
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{9F8E41FF-DAFA-4455-9048-7628779AFB3F}"/>

@@ -68,7 +68,18 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	//UE_LOG(LogTemp, Warning, TEXT("AimAsRotator: %s"), *AimAsRotator.ToString())
 
 		Barrel->Elevate(DeltaRotator.Pitch);
-		Turret->Turn(DeltaRotator.GetNormalized().Yaw);
+		if (FMath::Abs(DeltaRotator.Yaw) < 180)
+		{
+			Turret->Turn(DeltaRotator.Yaw);
+		}
+		else // Avoid going the long-way round
+		{
+			Turret->Turn(-DeltaRotator.Yaw);
+		}
+
+
+		CurrentYawTurnSpeed = DeltaRotator.GetNormalized().Yaw;
+		Cast<ATank>(GetOwner())->TurretTurnSound(DeltaRotator.GetNormalized().Yaw);
 }
 
 //void UTankAimingComponent::MoveTurretTowards(FVector AimDirection)

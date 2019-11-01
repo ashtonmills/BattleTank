@@ -23,6 +23,8 @@ class MYPROJECT2_API ATank : public APawn
 public: 
 	void AimAt(FVector HitLocation);
 
+	void TurretTurnSound(float TurnSpeed);
+
 	UFUNCTION(BlueprintCallable,Category = Setup)
 	void SetBarrelReference(UTankBarrel* BarrelToSet);
 
@@ -57,10 +59,15 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
 		float ReloadTimeInSeconds = 3;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool isPlayerPawn = 1;
+
 private : 
 	//lcoal barrel reference for spawning projectile
 	UAkComponent* WwiseComponent =nullptr;
 	UTankBarrel* Barrel = nullptr;
+	float CurrentTurretTurnSpeed;
+	bool bIsTurning = false;
 	double LastFireTime = 0;
 }
 ;

@@ -23,11 +23,75 @@
 								</Reference>
 							</ReferenceList>
 						</Action>
+						<Action Name="" ID="{471C55B8-4285-4CD1-B3F4-3778689C7FD4}" ShortID="33076050">
+							<PropertyList>
+								<Property Name="FadeInCurve" Type="int16" Value="6"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="TankTurretMoveLoop_01" ID="{45ADDCE3-B53E-4A0E-9C5A-FEE2E1D3CE2D}" WorkUnitID="{2AACF01C-92B0-4CA2-BDA9-77952BFFACC0}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{633A6625-2F18-41AB-A594-7DC39E6D5F69}" ShortID="861330026">
+							<PropertyList>
+								<Property Name="AbsoluteOrRelative" Type="int16" Value="1"/>
+								<Property Name="ActionType" Type="int16" Value="13"/>
+								<Property Name="FadeInCurve" Type="int16" Value="7"/>
+								<Property Name="FadeTime" Type="Real64" Value="1"/>
+								<Property Name="Pitch" Type="int32" Value="50">
+									<ModifierList>
+										<ModifierInfo>
+											<Modifier Name="" ID="{FCBCEE5F-7A3F-48E9-A2C9-D1D338876EAA}">
+												<PropertyList>
+													<Property Name="Max" Type="Real64" Value="1061"/>
+													<Property Name="Min" Type="Real64" Value="-505"/>
+												</PropertyList>
+											</Modifier>
+										</ModifierInfo>
+									</ModifierList>
+								</Property>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="TankTurretMoveLoop_01" ID="{45ADDCE3-B53E-4A0E-9C5A-FEE2E1D3CE2D}" WorkUnitID="{2AACF01C-92B0-4CA2-BDA9-77952BFFACC0}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
 					</ChildrenList>
 				</Event>
 				<Event Name="TankturretStopMove" ID="{61B1D0EC-D932-4788-99EC-3283C01015ED}">
 					<ChildrenList>
+						<Action Name="" ID="{4CBE27C6-EBEF-4AFF-8B6B-4F1B702FAE5E}" ShortID="387155869">
+							<PropertyList>
+								<Property Name="AbsoluteOrRelative" Type="int16" Value="1"/>
+								<Property Name="ActionType" Type="int16" Value="13"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.25"/>
+								<Property Name="Pitch" Type="int32" Value="-50"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="TankTurretMoveLoop_01" ID="{45ADDCE3-B53E-4A0E-9C5A-FEE2E1D3CE2D}" WorkUnitID="{2AACF01C-92B0-4CA2-BDA9-77952BFFACC0}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{190621AB-6645-41B4-BCDC-9CAC17C1C06B}" ShortID="806597322">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="FadeOutCurve" Type="int16" Value="7"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.25"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="TankTurretMoveLoop_01" ID="{45ADDCE3-B53E-4A0E-9C5A-FEE2E1D3CE2D}" WorkUnitID="{2AACF01C-92B0-4CA2-BDA9-77952BFFACC0}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
 						<Action Name="" ID="{20856E29-6F25-4AB8-9C2D-B990D081FAC6}" ShortID="621920499">
+							<PropertyList>
+								<Property Name="Delay" Type="Real64" Value="0.05"/>
+							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Target">
 									<ObjectRef Name="TankTurretStopMove" ID="{74411C70-C82A-40D3-86F8-89114E8DD48E}" WorkUnitID="{2AACF01C-92B0-4CA2-BDA9-77952BFFACC0}"/>

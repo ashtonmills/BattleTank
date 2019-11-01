@@ -30,14 +30,6 @@
 					<ShortName>TurretStopMove_04.wav</ShortName>
 					<Path>SFX\TurretStopMove_04_10C4C929.wem</Path>
 				</File>
-				<File Id="89600031" Language="SFX">
-					<ShortName>TurretStopMove_01.wav</ShortName>
-					<Path>SFX\TurretStopMove_01_10C4C929.wem</Path>
-				</File>
-				<File Id="163425080" Language="SFX">
-					<ShortName>TurretStopMove_02.wav</ShortName>
-					<Path>SFX\TurretStopMove_02_10C4C929.wem</Path>
-				</File>
 				<File Id="216737451" Language="SFX">
 					<ShortName>TurretStartMove_01.wav</ShortName>
 					<Path>SFX\TurretStartMove_01_10C4C929.wem</Path>
@@ -50,9 +42,9 @@
 					<ShortName>TurretStopMove_05.wav</ShortName>
 					<Path>SFX\TurretStopMove_05_10C4C929.wem</Path>
 				</File>
-				<File Id="756123999" Language="SFX">
-					<ShortName>TurretStopMove_03.wav</ShortName>
-					<Path>SFX\TurretStopMove_03_10C4C929.wem</Path>
+				<File Id="899113679" Language="SFX">
+					<ShortName>TankTurretMoveLoop_01.wav</ShortName>
+					<Path>SFX\TankTurretMoveLoop_01_D79FB2B7.wem</Path>
 				</File>
 			</IncludedMemoryFiles>
 		</SoundBank>

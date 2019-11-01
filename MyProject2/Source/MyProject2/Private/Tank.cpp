@@ -35,6 +35,26 @@ void ATank::AimAt(FVector HitLocation)
 	TankAimingComponent->AimAt(HitLocation,LaunchSpeed);
 }
 
+void ATank::TurretTurnSound(float TurnSpeed)
+{
+	float TurnSpeedAbsolute = std::abs(TurnSpeed);
+	if ((TurnSpeedAbsolute > 1) && (bIsTurning == false))
+	{
+		bIsTurning=true;
+		WwiseComponent->PostAkEventByName("TankTurretStartMove");
+	}
+	if ((TurnSpeedAbsolute < 1) && (bIsTurning == true))
+	{
+		bIsTurning = false;
+		WwiseComponent->PostAkEventByName("TankTurretStopMove");
+	}
+	//if (isPlayerPawn)
+	//{
+	//	UE_LOG(LogTemp, Warning, TEXT("bIsTurning = %b"), bIsTurning);
+	//}
+	
+}
+
 void ATank::SetBarrelReference(UTankBarrel* BarrelToSet)
 {
 	TankAimingComponent->SetBarrelReference(BarrelToSet);
@@ -73,3 +93,4 @@ void ATank::Fire()
 	}
 
 }
+

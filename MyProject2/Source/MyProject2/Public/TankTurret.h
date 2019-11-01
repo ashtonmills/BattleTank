@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Components/StaticMeshComponent.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
+#include "Tank.h"
 #include "Runtime/Core/Public/Math/UnrealMathUtility.h"
 #include "TankTurret.generated.h"
 
