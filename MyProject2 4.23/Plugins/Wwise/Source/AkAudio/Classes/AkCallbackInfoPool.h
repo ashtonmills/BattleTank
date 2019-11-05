@@ -2,11 +2,14 @@
 #pragma once
 
 #include "Engine/EngineTypes.h"
-#include "AkGameplayTypes.h"
 
-class AkCallbackInfoPool
+class UAkCallbackInfo;
+
+class AkCallbackInfoPool final
 {
 public:
+	~AkCallbackInfoPool();
+
 	template<typename CallbackType>
 	CallbackType* Acquire()
 	{
@@ -14,8 +17,6 @@ public:
 	}
 
 	void Release(UAkCallbackInfo* instance);
-
-	void Teardown();
 
 private:
 	UAkCallbackInfo* internalAcquire(UClass* type);

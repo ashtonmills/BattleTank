@@ -5,7 +5,7 @@
 =============================================================================*/
 #pragma once
 
-#include "AkInclude.h"
+#include "Platforms/AkUEPlatform.h"
 #include "Engine/EngineBaseTypes.h"
 #include "Engine/EngineTypes.h"
 #include "Engine/LatentActionManager.h"

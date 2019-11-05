@@ -1,24 +1,13 @@
 // Copyright (c) 2006-2018 Audiokinetic Inc. / All Rights Reserved
 
 #include "InitializationSettings/AkInitializationSettings.h"
-#include "InitializationSettings/AkAndroidInitializationSettings.h"
-#include "InitializationSettings/AkIOSInitializationSettings.h"
-#include "InitializationSettings/AkLinuxInitializationSettings.h"
-#include "InitializationSettings/AkLuminInitializationSettings.h"
-#include "InitializationSettings/AkMacInitializationSettings.h"
-#include "InitializationSettings/AkPS4InitializationSettings.h"
-#include "InitializationSettings/AkSwitchInitializationSettings.h"
-#include "InitializationSettings/AkWindowsInitializationSettings.h"
-#include "InitializationSettings/AkXBoxOneInitializationSettings.h"
+#include "Platforms/AkUEPlatform.h"
 
 #include "AkUnrealIOHookDeferred.h"
 #include "Async/ParallelFor.h"
 
 namespace AkInitializationSettings_Helpers
 {
-	thread_local uint32 threadIndex = UINT32_MAX;
-	FThreadSafeCounter g_nextThreadIndex(0);
-
 	void ParallelFor(void* data, AkUInt32 beginIndex, AkUInt32 endIndex, AkUInt32 /*tileSize*/, AkParallelForFunc func, void* userData, const char* in_szDebugName)
 	{
 		check(func);
@@ -30,9 +19,8 @@ namespace AkInitializationSettings_Helpers
 			{
 				check(data);
 
-				AkTaskContext ctx;
-				threadIndex = (threadIndex == UINT32_MAX) ? g_nextThreadIndex.Add(1) : threadIndex;
-				ctx.uIdxThread = threadIndex;
+				AkTaskContext ctx; // Unused in the SoundEngine right now.
+				ctx.uIdxThread = 0;
 				func(data, beginIndex + Index, beginIndex + Index + 1, ctx, userData);
 			});
 		}
@@ -58,7 +46,7 @@ FAkInitializationStructure::FAkInitializationStructure()
 
 	AK::MusicEngine::GetDefaultInitSettings(MusicSettings);
 
-#if !defined(AK_OPTIMIZED) && !PLATFORM_LINUX
+#if AK_ENABLE_COMMUNICATION
 	AK::Comm::GetDefaultInitSettings(CommSettings);
 #endif
 }
@@ -162,12 +150,8 @@ void FAkCommunicationSettingsWithSystemInitialization::FillInitializationStructu
 {
 	Super::FillInitializationStructure(InitializationStructure);
 
-#if !defined(AK_OPTIMIZED)
-#if PLATFORM_SWITCH
-	InitializationStructure.CommSettings.bInitSystemLib = false;
-#else
+#if AK_ENABLE_COMMUNICATION
 	InitializationStructure.CommSettings.bInitSystemLib = InitializeSystemComms;
-#endif
 #endif
 }
 
@@ -199,19 +183,6 @@ void FAkCommonInitializationSettings::FillInitializationStructure(FAkInitializat
 	SpatialAudioSettings.FillInitializationStructure(InitializationStructure);
 
 	InitializationStructure.MusicSettings.fStreamingLookAheadRatio = StreamingLookAheadRatio;
-}
-
-
-//////////////////////////////////////////////////////////////////////////
-// FAkCommonInitializationSettingsWithSampleRate
-
-void FAkCommonInitializationSettingsWithSampleRate::FillInitializationStructure(FAkInitializationStructure& InitializationStructure) const
-{
-	Super::FillInitializationStructure(InitializationStructure);
-
-#if !PLATFORM_PS4 && !PLATFORM_XBOXONE
-	InitializationStructure.PlatformInitSettings.uSampleRate = SampleRate;
-#endif
 }
 
 
@@ -264,30 +235,7 @@ namespace FAkSoundEngineInitialization
 		if (IOHookDeferred == nullptr)
 			return false;
 
-#if PLATFORM_ANDROID && !PLATFORM_LUMIN
-		const auto* InitializationSettings = GetDefault<UAkAndroidInitializationSettings>();
-#elif PLATFORM_IOS || PLATFORM_TVOS
-		const auto* InitializationSettings = GetDefault<UAkIOSInitializationSettings>();
-#elif PLATFORM_LINUX
-		const auto* InitializationSettings = GetDefault<UAkLinuxInitializationSettings>();
-#elif PLATFORM_LUMIN
-		const auto* InitializationSettings = GetDefault<UAkLuminInitializationSettings>();
-#elif PLATFORM_MAC
-		const auto* InitializationSettings = GetDefault<UAkMacInitializationSettings>();
-#elif PLATFORM_PS4
-		const auto* InitializationSettings = GetDefault<UAkPS4InitializationSettings>();
-#elif PLATFORM_SWITCH
-		const auto* InitializationSettings = GetDefault<UAkSwitchInitializationSettings>();
-#elif PLATFORM_WINDOWS
-		const auto* InitializationSettings = GetDefault<UAkWindowsInitializationSettings>();
-#elif PLATFORM_XBOXONE
-		const auto* InitializationSettings = GetDefault<UAkXBoxOneInitializationSettings>();
-#else
-		UE_LOG(LogAkAudio, Error, TEXT("InitializationSettings structure not defined for this platform. Windows settings will be used."));
-
-		const auto* InitializationSettings = GetDefault<UAkWindowsInitializationSettings>();
-#endif
-
+		const UAkInitializationSettings* InitializationSettings = FAkPlatform::GetInitializationSettings();
 		if (InitializationSettings == nullptr)
 			return false;
 
@@ -312,7 +260,7 @@ namespace FAkSoundEngineInitialization
 		if (AK::SpatialAudio::Init(InitializationStructure.SpatialAudioInitSettings) != AK_Success)
 			return false;
 
-#if !defined(AK_OPTIMIZED) && !PLATFORM_LINUX
+#if AK_ENABLE_COMMUNICATION
 		if (AK::Comm::Init(InitializationStructure.CommSettings) != AK_Success)
 		{
 			UE_LOG(LogInit, Warning, TEXT("Could not initialize communication."));
@@ -324,7 +272,7 @@ namespace FAkSoundEngineInitialization
 
 	void Finalize()
 	{
-#if !defined(AK_OPTIMIZED) && !PLATFORM_LINUX
+#if AK_ENABLE_COMMUNICATION
 		AK::Comm::Term();
 #endif
 

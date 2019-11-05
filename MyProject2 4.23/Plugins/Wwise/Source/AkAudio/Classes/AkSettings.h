@@ -35,7 +35,7 @@ class AKAUDIO_API UAkSettings : public UObject
 	UPROPERTY(Config)
 	bool bEnableMultiCoreRendering_DEPRECATED = false;
 
-	UPROPERTY()
+	UPROPERTY(Config)
 	bool MigratedEnableMultiCoreRendering = false;
 
 	UPROPERTY(Config)

@@ -46,21 +46,6 @@ namespace WwiseBnkGenHelper
 	void GenerateSoundBanksNonBlocking( TArray< TSharedPtr<FString> >& in_rBankNames, TArray< TSharedPtr<FString> >& in_PlatformNames, FOnBankGenerationComplete OnSoundBankGenerationComplete);
 
 	/**
-	 * Returns all platforms supported in both Wwise and the Unreal project
-	 *
-	 * @param WwisePlatforms	Output parameter: array of platforms
-	 *
-	 */
-	TArray< TSharedPtr<FString> > GetWwisePlatforms();
-	AK_DEPRECATED(2019.1, "This function is deprecated and will be removed in future releases.")
-	void GetWwisePlatforms(TArray< TSharedPtr<FString> >& WwisePlatforms);
-
-	/**
-	 * Returns all platforms supported in the Unreal project
-	 */
-	TSet<FString> GetSupportedPlatforms();
-
-	/**
 	 * Gather attenuation info for newly generated banks
 	 *
 	 * @params BankToEventSet	Map of SoundBanks to Events contained in that SoundBank

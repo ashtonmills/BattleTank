@@ -197,6 +197,7 @@ int32 UAkGameplayStatics::PostAndWaitForEndOfEvent(class UAkAudioEvent* AkEvent,
 		return AK_INVALID_PLAYING_ID;
 	}
 
+	AkPlayingID PlayingID = AK_INVALID_PLAYING_ID;
 	AkDeviceAndWorld DeviceAndWorld(Actor);
 	if (DeviceAndWorld.IsValid())
 	{
@@ -208,7 +209,6 @@ int32 UAkGameplayStatics::PostAndWaitForEndOfEvent(class UAkAudioEvent* AkEvent,
 			LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, NewAction);
 		}
 
-		AkPlayingID PlayingID = AK_INVALID_PLAYING_ID;
 		if (ExternalSources.Num() > 0)
 		{
 			FAkSDKExtrernalSourceArray SDKExternalSrcInfo(ExternalSources);
@@ -225,7 +225,7 @@ int32 UAkGameplayStatics::PostAndWaitForEndOfEvent(class UAkAudioEvent* AkEvent,
 		}
 	}
 
-	return AK_INVALID_PLAYING_ID;
+	return PlayingID;
 }
 
 void UAkGameplayStatics::PostEventByName(const FString& EventName, class AActor* in_pActor, bool in_stopWhenAttachedToDestroyed)

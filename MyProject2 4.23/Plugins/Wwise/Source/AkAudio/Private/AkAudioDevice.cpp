@@ -35,6 +35,7 @@
 #include "AkUnrealIOHookDeferred.h"
 #include "AkLateReverbComponent.h"
 #include "AkUnrealHelper.h"
+#include "Platforms/AkUEPlatform.h"
 #include "AkCallbackInfoPool.h"
 
 #include "Async/TaskGraphInterfaces.h"
@@ -76,6 +77,7 @@
 #include <AK/Plugin/AkGainFXFactory.h>
 #include <AK/Plugin/AkHarmonizerFXFactory.h>
 #include <AK/Plugin/AkTimeStretchFXFactory.h>
+#include <AK/Plugin/AkOpusDecoderFactory.h>
 #include <AK/Plugin/AkPitchShifterFXFactory.h>
 #include <AK/Plugin/AkStereoDelayFXFactory.h>
 #include <AK/Plugin/AkMeterFXFactory.h>
@@ -98,15 +100,6 @@
 #include <AK/Plugin/AkConvolutionReverbFXFactory.h>
 #endif
 
-#if PLATFORM_MAC || PLATFORM_IOS
-#include <AK/Plugin/AkAACFactory.h>
-#endif
-
-#if PLATFORM_SWITCH
-#include <AK/Plugin/AkOpusNXFactory.h>
-#else
-#include <AK/Plugin/AkOpusDecoderFactory.h>
-#endif
 
 #include <AK/SpatialAudio/Common/AkSpatialAudio.h>
 
@@ -597,18 +590,16 @@ void FAkAudioDevice::Teardown()
 			LowLevelIOHook = nullptr;
 		}
 
-		if (CallbackInfoPool)
-		{
-			CallbackInfoPool->Teardown();
-
-			delete CallbackInfoPool;
-			CallbackInfoPool = nullptr;
-		}
-
 		if (CallbackManager)
 		{
 			delete CallbackManager;
 			CallbackManager = nullptr;
+		}
+
+		if (CallbackInfoPool)
+		{
+			delete CallbackInfoPool;
+			CallbackInfoPool = nullptr;
 		}
 
 		m_bSoundEngineInitialized = false;
@@ -2810,7 +2801,6 @@ void FAkAudioDevice::OnSoundObjectNotif(
 
 #endif
 
-#if PLATFORM_WINDOWS || PLATFORM_MAC
 static void UELocalOutputFunc(
 	AK::Monitor::ErrorCode in_eErrorCode,
 	const AkOSChar* in_pszError,
@@ -2818,26 +2808,20 @@ static void UELocalOutputFunc(
 	AkPlayingID in_playingID,
 	AkGameObjectID in_gameObjID )
 {
-    wchar_t* szWideError;
-#if PLATFORM_MAC
-    CONVERT_OSCHAR_TO_WIDE(in_pszError, szWideError);
-#else
-    szWideError = (wchar_t*)in_pszError;
-#endif
+    FString AkError(in_pszError);
     
 	if( !IsRunningCommandlet() )
 	{
 		if ( in_eErrorLevel == AK::Monitor::ErrorLevel_Message )
 		{
-			UE_LOG( LogAkAudio, Log, TEXT("%s"), szWideError );
+			UE_LOG( LogAkAudio, Log, TEXT("%s"), *AkError);
 		}
 		else
 		{
-			UE_LOG( LogAkAudio, Error, TEXT("%s"), szWideError );
+			UE_LOG( LogAkAudio, Error, TEXT("%s"), *AkError);
 		}
 	}
 }
-#endif
 
 bool FAkAudioDevice::EnsureInitialized()
 {
@@ -2869,10 +2853,8 @@ bool FAkAudioDevice::EnsureInitialized()
 		return false;
 	}
 
-#if PLATFORM_WINDOWS || PLATFORM_MAC
 	// Enable AK error redirection to UE log.
 	AK::Monitor::SetLocalOutput(AK::Monitor::ErrorLevel_All, UELocalOutputFunc);
-#endif
 
 	// Setup banks path
 	SetBankDirectory();
@@ -2970,31 +2952,7 @@ void FAkAudioDevice::OnActorSpawned(AActor* SpawnedActor)
 
 FString FAkAudioDevice::GetBasePath()
 {
-	FString BasePath = AkUnrealHelper::GetSoundBankDirectory();
-
-#if defined AK_WIN
-	BasePath = FPaths::Combine(*BasePath, TEXT("Windows/"));
-#elif defined AK_LINUX
-	BasePath = FPaths::Combine(*BasePath, TEXT("Linux/"));
-#elif defined AK_MAC_OS_X
-	BasePath = FPaths::Combine(*BasePath, TEXT("Mac/"));
-#elif defined AK_PS4
-	BasePath = FPaths::Combine(*BasePath, TEXT("PS4/"));
-#elif defined AK_XBOXONE
-	BasePath = FPaths::Combine(*BasePath, TEXT("XboxOne/"));
-#elif defined AK_LUMIN
-    BasePath = FPaths::Combine(*BasePath, TEXT("Lumin/"));
-#elif defined AK_ANDROID
-	BasePath = FPaths::Combine(*BasePath, TEXT("Android/"));
-#elif defined AK_IOS
-	BasePath = FPaths::Combine(*BasePath, TEXT("iOS/"));
-#elif defined AK_NX
-	BasePath = FPaths::Combine(*BasePath, TEXT("Switch/"));
-#else
-#error "AkAudio integration is unsupported for this platform"
-#endif
-
-	return BasePath;
+	return FPaths::Combine(AkUnrealHelper::GetSoundBankDirectory(), FAkPlatform::GetPlatformBasePath());
 }
 
 void FAkAudioDevice::SetBankDirectory()

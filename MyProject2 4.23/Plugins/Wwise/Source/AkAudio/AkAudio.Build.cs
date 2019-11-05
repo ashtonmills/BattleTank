@@ -3,186 +3,91 @@ using UnrealBuildTool;
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Reflection;
+
+// Platform-specific files implement this interface, returning their particular dependencies, defines, etc.
+public abstract class AkUEPlatform
+{
+	protected ReadOnlyTargetRules Target;
+	protected string ThirdPartyFolder;
+	
+	public AkUEPlatform(ReadOnlyTargetRules in_Target, string in_ThirdPartyFolder)
+	{
+		Target = in_Target;
+		ThirdPartyFolder = in_ThirdPartyFolder;
+	}
+	
+	public static AkUEPlatform GetAkUEPlatformInstance(ReadOnlyTargetRules Target, string ThirdPartyFolder)
+	{
+		var AkUEPlatformType = System.Type.GetType("AkUEPlatform_" + Target.Platform.ToString());
+		if(AkUEPlatformType == null)
+		{
+			throw new BuildException("Wwise does not support platform " + Target.Platform.ToString());
+		}
+		
+		AkUEPlatform PlatformInstance = Activator.CreateInstance(AkUEPlatformType, Target, ThirdPartyFolder) as AkUEPlatform;
+		if(PlatformInstance == null)
+		{
+			throw new BuildException("Wwise could not instanciate platform " + Target.Platform.ToString());
+		}
+
+		return PlatformInstance;
+	}
+	
+
+	protected string akConfigurationDir
+	{
+		get
+		{
+			if (Target.Configuration == UnrealTargetConfiguration.Debug)
+			{
+				// change bDebugBuildsActuallyUseDebugCRT to true in BuildConfiguration.cs to actually link debug binaries
+				if (!Target.bDebugBuildsActuallyUseDebugCRT)
+				{
+					return "Profile";
+				}
+				else
+				{
+					return "Debug";
+				}
+			}
+			else if (Target.Configuration == UnrealTargetConfiguration.Development ||
+					Target.Configuration == UnrealTargetConfiguration.Test ||
+					Target.Configuration == UnrealTargetConfiguration.DebugGame)
+			{
+				return "Profile";
+			}
+			else // if (Target.Configuration == UnrealTargetConfiguration.Shipping)
+			{
+				return "Release";
+			}
+		}
+	}
+	
+	public abstract string SanitizeLibName(string in_libName);
+	public abstract string GetPluginFullPath(string PluginName, string LibPath);
+	public abstract bool SupportsAkAutobahn { get; }
+	public abstract bool SupportsCommunication { get; }
+	
+	public abstract List<string> GetPublicLibraryPaths();
+	public abstract List<string> GetPublicAdditionalLibraries();
+	public abstract List<string> GetPublicDefinitions();
+	public abstract List<string> GetPublicAdditionalFrameworks();
+}
 
 public class AkAudio : ModuleRules
 {
-	string akLibPath = string.Empty;
+	private static AkUEPlatform AkUEPlatformInstance;
 
-#if WITH_FORWARDED_MODULE_RULES_CTOR
-    private void AddWwiseLib(ReadOnlyTargetRules Target, string in_libName)
-#else
-	private void AddWwiseLib(TargetInfo Target, string in_libName)
-#endif
+	public AkAudio(ReadOnlyTargetRules Target) : base(Target)
 	{
-#if UE_4_20_OR_LATER
-		if (Target.Platform == UnrealTargetPlatform.PS4 || Target.Platform == UnrealTargetPlatform.Android || Target.Platform == UnrealTargetPlatform.Lumin || Target.Platform == UnrealTargetPlatform.Linux || Target.Platform == UnrealTargetPlatform.IOS || Target.Platform == UnrealTargetPlatform.Switch)
-#else
-		if (Target.Platform == UnrealTargetPlatform.PS4 || Target.Platform == UnrealTargetPlatform.Android || Target.Platform == UnrealTargetPlatform.Linux || Target.Platform == UnrealTargetPlatform.IOS || Target.Platform == UnrealTargetPlatform.Switch)
-#endif
-		{
-			PublicAdditionalLibraries.Add(in_libName);
-		}
-		else if (Target.Platform == UnrealTargetPlatform.Mac)
-		{
-			PublicAdditionalLibraries.Add(Path.Combine(akLibPath, "lib" + in_libName + ".a"));
-		}
-		else
-		{
-			PublicAdditionalLibraries.Add(in_libName + ".lib");
-		}
-	}
-
-    private string GetPluginFullPath(string PluginName, string LibPath)
-    {
-#if UE_4_20_OR_LATER
-        if (Target.Platform == UnrealTargetPlatform.Mac || Target.Platform == UnrealTargetPlatform.PS4 || Target.Platform == UnrealTargetPlatform.Android || Target.Platform == UnrealTargetPlatform.Lumin || Target.Platform == UnrealTargetPlatform.Linux || Target.Platform == UnrealTargetPlatform.IOS || Target.Platform == UnrealTargetPlatform.Switch)
-#else
-        if (Target.Platform == UnrealTargetPlatform.Mac || Target.Platform == UnrealTargetPlatform.PS4 || Target.Platform == UnrealTargetPlatform.Android || Target.Platform == UnrealTargetPlatform.Linux || Target.Platform == UnrealTargetPlatform.IOS || Target.Platform == UnrealTargetPlatform.Switch)
-#endif
-        {
-            return Path.Combine(LibPath, "lib" + PluginName + ".a");
-        }
-        else
-        {
-            return Path.Combine(LibPath, PluginName + ".lib");
-        }
-    }
-
-    private bool IsPluginInstalled(string PluginName)
-    {
-        foreach (string LibPath in PublicLibraryPaths)
-        {
-            if (File.Exists(GetPluginFullPath(PluginName, LibPath)))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-#if WITH_FORWARDED_MODULE_RULES_CTOR
-    private void AddWwisePlugin(ReadOnlyTargetRules Target, string in_libName)
-#else
-    private void AddWwisePlugin(TargetInfo Target, string in_libName)
-#endif
-    {
-#if UE_4_19_OR_LATER
-        var Defs = PublicDefinitions;
-#else
-        var Defs = Definitions;
-#endif
-        if (IsPluginInstalled(in_libName))
-        {
-            AddWwiseLib(Target, in_libName);
-            Defs.Add("AK_WITH_" + in_libName.ToUpper() + "=1");
-
-        }
-        else
-        {
-            Defs.Add("AK_WITH_" + in_libName.ToUpper() + "=0");
-        }
-    }
-
-#if UE_4_18_OR_LATER
-    private string GetVisualStudioVersion(ReadOnlyTargetRules Target)
-#else
-    private string GetVisualStudioVersion()
-#endif
-    {
-#if UE_4_18_OR_LATER
-        WindowsCompiler Compiler = Target.WindowsPlatform.Compiler;
-#else
-        WindowsCompiler Compiler = WindowsPlatform.Compiler;
-#endif
-        string VSVersion = "vc140";
-
-		try
-		{
-			if (Compiler == (WindowsCompiler)Enum.Parse(typeof(WindowsCompiler), "VisualStudio2013"))
-			{
-				VSVersion = "vc120";
-			}
-		}
-		catch (Exception)
-		{
-		}
-
-		try
-		{
-			if (Compiler == (WindowsCompiler)Enum.Parse(typeof(WindowsCompiler), "VisualStudio2015"))
-			{
-				VSVersion = "vc140";
-			}
-		}
-		catch (Exception)
-		{
-		}
-
-		try
-		{
-			if (Compiler == (WindowsCompiler)Enum.Parse(typeof(WindowsCompiler), "VisualStudio2017"))
-			{
-				VSVersion = "vc150";
-			}
-		}
-		catch (Exception)
-		{
-		}
-
-		return VSVersion;
-	}
-
-    private bool SupportsAkAutobahn()
-    {
-        if (Target.Configuration == UnrealTargetConfiguration.Shipping)
-            return false;
-
-		if(Target.Platform == UnrealTargetPlatform.Mac || Target.Platform == UnrealTargetPlatform.Win32 || Target.Platform == UnrealTargetPlatform.Win64)
-		    return true;
-		
-		return false;
-    }
-    
-#if UE_4_17_OR_LATER
-    public AkAudio(ReadOnlyTargetRules Target) : base(Target)
-#else
-	public AkAudio(TargetInfo Target)
-#endif
-	{
+		string ThirdPartyFolder = Path.Combine(ModuleDirectory, "../../ThirdParty");
+		AkUEPlatformInstance = AkUEPlatform.GetAkUEPlatformInstance(Target, ThirdPartyFolder);
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
+		
 		PrivateIncludePathModuleNames.AddRange(new string[] { "Settings", "UMG"});
-#if UE_4_17_OR_LATER
-        ReadOnlyTargetRules BuildConfig = Target;
-#else
-        TargetRules BuildConfig = UEBuildConfiguration;
-#endif
-
-		PrivateIncludePaths.AddRange(
-			new string[] {
-			"AkAudio/Private",
-			}
-		);
-
-        PrivateDependencyModuleNames.AddRange(
-            new string[]
-            {
-                "Core",
-                "CoreUObject",
-                "Engine",
-                "SlateCore",
-                "NetworkReplayStreaming",
-				"MovieScene",
-				"MovieSceneTracks",
-                "Projects",
-                "Json",
-                "Slate",
-                "InputCore"
-            });
-
-        PublicDependencyModuleNames.Add("UMG");
-        
-        PrivateDependencyModuleNames.AddRange(
+		PublicDependencyModuleNames.Add("UMG");
+		PrivateDependencyModuleNames.AddRange(
 			new string[]
 			{
 				"Core",
@@ -190,280 +95,160 @@ public class AkAudio : ModuleRules
 				"Engine",
 				"SlateCore",
 				"NetworkReplayStreaming",
+				"MovieScene",
+				"MovieSceneTracks",
 				"Projects",
+				"Json",
+				"Slate",
+				"InputCore",
+				"Projects"
 			});
 
-		string akDir = Path.GetFullPath(Path.Combine(ModuleDirectory, "../../ThirdParty"));
-		List<string> akPlatformLibDir = new List<string>();
-
-#if UE_4_19_OR_LATER
-        var Defs = PublicDefinitions;
-#else
-        var Defs = Definitions;
-#endif
-
-        Defs.Add("USE_AKAUDIO");
-
-        PublicIncludePaths.AddRange(
-			new string[] {
-				// SDK includes
-				Path.Combine(akDir, "include"),
-            }
-        );
-
-        // These definitions can be set as platform-specific
-        if (BuildConfig.bBuildEditor == true)
-        {
-            // Boost the number of IO for the editor, since it uses the old IO system
-            Defs.Add("AK_UNREAL_MAX_CONCURRENT_IO=256");
-        }
-        else
-        {
-            Defs.Add("AK_UNREAL_MAX_CONCURRENT_IO=32");
-        }
-
-        Defs.Add("AK_UNREAL_IO_GRANULARITY=32768");
-
-        if (Target.Platform == UnrealTargetPlatform.Win32 || Target.Platform == UnrealTargetPlatform.Win64)
+		if (Target.bBuildEditor)
 		{
-			string tempDir = (Target.Platform == UnrealTargetPlatform.Win32) ? "Win32_" : "x64_";
-#if UE_4_18_OR_LATER
-			tempDir += GetVisualStudioVersion(Target);
-#else
-            tempDir += GetVisualStudioVersion();
-#endif
-            akPlatformLibDir.Add(tempDir);
-            string LibFolder = (Target.Platform == UnrealTargetPlatform.Win32) ? "x86" : "x64";
-
-			if (BuildConfig.bBuildEditor == true)
-            {
-                // Sound frame is required for enabling communication between Wwise Application and the unreal editor.
-                // Not to be defined in shipping mode.
-                Defs.Add("AK_SOUNDFRAME");
-            }
-
-			PublicAdditionalLibraries.Add("dsound.lib");
-			PublicAdditionalLibraries.Add("dxguid.lib");
-			PublicAdditionalLibraries.Add("Msacm32.lib");
-			PublicAdditionalLibraries.Add("XInput.lib");
-            PublicAdditionalLibraries.Add("dinput8.lib");
-        }
-		else if (Target.Platform == UnrealTargetPlatform.XboxOne)
-		{
-			string VSVersion = "vc140";
-
-			// Use reflection because the GitHub version of UE is missing things.
-			var XboxOnePlatformType = System.Type.GetType("XboxOnePlatform", false);
-			if (XboxOnePlatformType != null)
-			{
-				var XboxOneCompilerField = XboxOnePlatformType.GetField("Compiler");
-				if (XboxOneCompilerField != null)
+			PrivateDependencyModuleNames.AddRange(
+				new string[]
 				{
-					var XboxOneCompilerValue = XboxOneCompilerField.GetValue(null);
-					if (XboxOneCompilerValue.ToString() == "VisualStudio2012")
-						VSVersion = "vc110";
-				}
+					"UnrealEd",
+					"DesktopPlatform"
+				});
+			
+			foreach (var Platform in GetAvailablePlatforms(ModuleDirectory))
+			{
+				PublicDefinitions.Add("AK_PLATFORM_" + Platform.ToUpper());
 			}
-
-            akPlatformLibDir.Add("XboxOne_" + VSVersion);
-
-            PublicAdditionalLibraries.Add("AcpHal.lib");
-			PublicAdditionalLibraries.Add("MMDevApi.lib");
-            Defs.Add("_XBOX_ONE");
 		}
-		else if (Target.Platform == UnrealTargetPlatform.Linux)
-		{
-            akPlatformLibDir.Add("Linux_x64");
-        }
-		else if (Target.Platform == UnrealTargetPlatform.Mac)
-		{
-            akPlatformLibDir.Add("Mac");
-        }
-		else if (Target.Platform == UnrealTargetPlatform.IOS)
-		{
-            akPlatformLibDir.Add("iOS");
-		}
-		else if (Target.Platform == UnrealTargetPlatform.PS4)
-		{
-            akPlatformLibDir.Add("PS4");
-            PublicAdditionalLibraries.Add("SceAjm_stub_weak");
-			PublicAdditionalLibraries.Add("SceAudio3d_stub_weak");
-            PublicAdditionalLibraries.Add("SceMove_stub_weak");
-            Defs.Add("__ORBIS__");
-        }
-        else if (Target.Platform == UnrealTargetPlatform.Android)
-		{
-            akPlatformLibDir.Add("Android_armeabi-v7a");
-            akPlatformLibDir.Add("Android_x86");
-            akPlatformLibDir.Add("Android_arm64-v8a");
-            akPlatformLibDir.Add("Android_x86_64");
-            Defs.Add("__ANDROID__");
-        }
-		else if (Target.Platform == UnrealTargetPlatform.Switch)
-		{
-            akPlatformLibDir.Add("NX64");
-            Defs.Add("NN_NINTENDO_SDK");
-        }
-#if UE_4_20_OR_LATER
-		else if (Target.Platform == UnrealTargetPlatform.Lumin)
-		{
-			akPlatformLibDir.Add("Lumin");
-			Defs.Add("AK_LUMIN");
-		}
-#endif
 
+		PrivateIncludePaths.Add("AkAudio/Private");
+		PublicIncludePaths.Add(Path.Combine(ThirdPartyFolder, "include"));
+		
+		PublicDefinitions.Add("AK_UNREAL_MAX_CONCURRENT_IO=32");
+		PublicDefinitions.Add("AK_UNREAL_IO_GRANULARITY=32768");
 		if (Target.Configuration == UnrealTargetConfiguration.Shipping)
 		{
-            Defs.Add("AK_OPTIMIZED");
-        }
-
-		string akConfigurationDir;
-
-		if (Target.Configuration == UnrealTargetConfiguration.Debug)
-		{
-			// change bDebugBuildsActuallyUseDebugCRT to true in BuildConfiguration.cs to actually link debug binaries
-#if UE_4_18_OR_LATER
-            if (!Target.bDebugBuildsActuallyUseDebugCRT)
-#else
-            if (!BuildConfiguration.bDebugBuildsActuallyUseDebugCRT)
-#endif
-			{
-				akConfigurationDir = "Profile";
-			}
-			else
-			{
-				akConfigurationDir = "Debug";
-			}
+			PublicDefinitions.Add("AK_OPTIMIZED");
 		}
-		else if (Target.Configuration == UnrealTargetConfiguration.Development ||
-				Target.Configuration == UnrealTargetConfiguration.Test ||
-				Target.Configuration == UnrealTargetConfiguration.DebugGame)
+		
+		if (Target.Configuration != UnrealTargetConfiguration.Shipping && AkUEPlatformInstance.SupportsCommunication)
 		{
-			akConfigurationDir = "Profile";
-		}
-		else // if (Target.Configuration == UnrealTargetConfiguration.Shipping)
-		{
-			akConfigurationDir = "Release";
-		}
-
-		if (Target.Platform == UnrealTargetPlatform.IOS)
-		{
-			akConfigurationDir += "-iphoneos";
-		}
-
-		if (Target.Platform == UnrealTargetPlatform.Linux)
-		{
-			// No profiler support in the cross-compile toolchain.
-			akConfigurationDir = "Release";
-		}
-
-        foreach (string libDir in akPlatformLibDir)
-        {
-            akLibPath = Path.Combine(Path.Combine(Path.Combine(akDir, libDir), akConfigurationDir), "lib");
-            PublicLibraryPaths.Add(akLibPath);
-        }
-
-		AddWwiseLib(Target, "AkSoundEngine");
-		AddWwiseLib(Target, "AkMemoryMgr");
-		AddWwiseLib(Target, "AkStreamMgr");
-		AddWwiseLib(Target, "AkMusicEngine");
-		AddWwiseLib(Target, "AkSpatialAudio");
-
-		AddWwiseLib(Target, "AkVorbisDecoder");
-		AddWwiseLib(Target, "AkSilenceSource");
-		AddWwiseLib(Target, "AkSineSource");
-		AddWwiseLib(Target, "AkToneSource");
-		AddWwiseLib(Target, "AkPeakLimiterFX");
-		AddWwiseLib(Target, "AkMatrixReverbFX");
-		AddWwiseLib(Target, "AkParametricEQFX");
-		AddWwiseLib(Target, "AkDelayFX");
-		AddWwiseLib(Target, "AkExpanderFX");
-		AddWwiseLib(Target, "AkFlangerFX");
-		AddWwiseLib(Target, "AkCompressorFX");
-		AddWwiseLib(Target, "AkGainFX");
-		AddWwiseLib(Target, "AkHarmonizerFX");
-		AddWwiseLib(Target, "AkTimeStretchFX");
-		AddWwiseLib(Target, "AkPitchShifterFX");
-		AddWwiseLib(Target, "AkStereoDelayFX");
-		AddWwiseLib(Target, "AkMeterFX");
-		AddWwiseLib(Target, "AkGuitarDistortionFX");
-		AddWwiseLib(Target, "AkTremoloFX");
-		AddWwiseLib(Target, "AkRoomVerbFX");
-		AddWwiseLib(Target, "AkAudioInputSource");
-		AddWwiseLib(Target, "AkSynthOneSource");
-		AddWwiseLib(Target, "AkRecorderFX");
-
-        AddWwisePlugin(Target, "AkReflectFX");
-        AddWwisePlugin(Target, "AkConvolutionReverbFX");
-        AddWwisePlugin(Target, "AuroHeadphoneFX");
-
-        if (SupportsAkAutobahn())
-        {
-            Defs.Add("AK_SUPPORT_WAAPI=1");
-            AddWwiseLib(Target, "AkAutobahn");
+			AddWwiseLib("CommunicationCentral");
+			PublicDefinitions.Add("AK_ENABLE_COMMUNICATION=1");
         }
         else
-        {
-            Defs.Add("AK_SUPPORT_WAAPI=0");
-        }
-
-		if (Target.Platform == UnrealTargetPlatform.PS4)
 		{
-			AddWwiseLib(Target, "SceAudio3dEngine");
+			PublicDefinitions.Add("AK_ENABLE_COMMUNICATION=0");
 		}
-
-		if (Target.Platform == UnrealTargetPlatform.Mac)
+		
+		// Platform-specific dependencies
+		PublicLibraryPaths.AddRange(AkUEPlatformInstance.GetPublicLibraryPaths());
+		PublicAdditionalLibraries.AddRange(AkUEPlatformInstance.GetPublicAdditionalLibraries());
+		PublicDefinitions.AddRange(AkUEPlatformInstance.GetPublicDefinitions());
+		
+		var Frameworks = AkUEPlatformInstance.GetPublicAdditionalFrameworks();
+		foreach(var fw in Frameworks)
 		{
 #if UE_4_22_OR_LATER
-			PublicAdditionalFrameworks.Add(new Framework("AudioUnit"));
-			PublicAdditionalFrameworks.Add(new Framework("AudioToolbox"));
-			PublicAdditionalFrameworks.Add(new Framework("CoreAudio"));
+			PublicAdditionalFrameworks.Add(new ModuleRules.Framework(fw));
 #else
-			PublicAdditionalFrameworks.Add(new UEBuildFramework("AudioUnit"));
-			PublicAdditionalFrameworks.Add(new UEBuildFramework("AudioToolbox"));
-			PublicAdditionalFrameworks.Add(new UEBuildFramework("CoreAudio"));
+			PublicAdditionalFrameworks.Add(new UEBuildFramework(fw));
 #endif
-			AddWwiseLib(Target, "AkAACDecoder");
 		}
 
-		if (Target.Platform == UnrealTargetPlatform.IOS)
-		{
-#if UE_4_22_OR_LATER
-			PublicAdditionalFrameworks.Add(new Framework("AudioToolbox"));
-			PublicAdditionalFrameworks.Add(new Framework("CoreAudio"));
-#else
-			PublicAdditionalFrameworks.Add(new UEBuildFramework("AudioToolbox"));
-			PublicAdditionalFrameworks.Add(new UEBuildFramework("CoreAudio"));
-#endif
-			AddWwiseLib(Target, "AkAACDecoder");
-		}
+		AddWwiseLib("AkSoundEngine");
+		AddWwiseLib("AkMemoryMgr");
+		AddWwiseLib("AkStreamMgr");
+		AddWwiseLib("AkMusicEngine");
+		AddWwiseLib("AkSpatialAudio");
+		AddWwiseLib("AkVorbisDecoder");
+		AddWwiseLib("AkSilenceSource");
+		AddWwiseLib("AkSineSource");
+		AddWwiseLib("AkToneSource");
+		AddWwiseLib("AkPeakLimiterFX");
+		AddWwiseLib("AkMatrixReverbFX");
+		AddWwiseLib("AkParametricEQFX");
+		AddWwiseLib("AkDelayFX");
+		AddWwiseLib("AkExpanderFX");
+		AddWwiseLib("AkFlangerFX");
+		AddWwiseLib("AkCompressorFX");
+		AddWwiseLib("AkGainFX");
+		AddWwiseLib("AkHarmonizerFX");
+		AddWwiseLib("AkTimeStretchFX");
+		AddWwiseLib("AkPitchShifterFX");
+		AddWwiseLib("AkStereoDelayFX");
+		AddWwiseLib("AkMeterFX");
+		AddWwiseLib("AkGuitarDistortionFX");
+		AddWwiseLib("AkTremoloFX");
+		AddWwiseLib("AkRoomVerbFX");
+		AddWwiseLib("AkAudioInputSource");
+		AddWwiseLib("AkSynthOneSource");
+		AddWwiseLib("AkRecorderFX");
+		AddWwiseLib("AkOpusDecoder");
+		
+		AddWwisePlugin("AkReflectFX");
+		AddWwisePlugin("AkConvolutionReverbFX");
+		AddWwisePlugin("AuroHeadphoneFX");
 
-		if (Target.Platform == UnrealTargetPlatform.Switch)
+		if (AkUEPlatformInstance.SupportsAkAutobahn)
 		{
-			AddWwiseLib(Target, "AkOpusNXDecoder");
+			PublicDefinitions.Add("AK_SUPPORT_WAAPI=1");
+			AddWwiseLib("AkAutobahn");
 		}
 		else
 		{
-			AddWwiseLib(Target, "AkOpusDecoder");
+			PublicDefinitions.Add("AK_SUPPORT_WAAPI=0");
+		}
+	}
+	
+	private bool IsPluginInstalled(string PluginName)
+	{
+		foreach (string LibPath in PublicLibraryPaths)
+		{
+			if (File.Exists(AkUEPlatformInstance.GetPluginFullPath(PluginName, LibPath)))
+			{
+				return true;
+			}
 		}
 
-		if (Defs.Contains("AK_OPTIMIZED") == false && Target.Platform != UnrealTargetPlatform.Linux)
+		return false;
+	}
+	
+	private void AddWwiseLib(string in_libName)
+	{
+		string SanitizedLibName = AkUEPlatformInstance.SanitizeLibName(in_libName);
+		if(!string.IsNullOrEmpty(SanitizedLibName))
 		{
-			AddWwiseLib(Target, "CommunicationCentral");
+			PublicAdditionalLibraries.Add(SanitizedLibName);
+		}
+	}
+
+	private void AddWwisePlugin(string in_libName)
+	{
+		if (IsPluginInstalled(in_libName))
+		{
+			AddWwiseLib(in_libName);
+			PublicDefinitions.Add("AK_WITH_" + in_libName.ToUpper() + "=1");
+		}
+		else
+		{
+			PublicDefinitions.Add("AK_WITH_" + in_libName.ToUpper() + "=0");
+		}
+	}
+
+	private static List<string> GetAvailablePlatforms(string ModuleDir)
+	{
+		List<string> FoundPlatforms = new List<string>();
+		const string StartPattern = "AkAudio_";
+		const string EndPattern = ".Build.cs";
+		foreach (var BuildCsFile in System.IO.Directory.GetFiles(ModuleDir, "*" + EndPattern))
+		{
+			if (BuildCsFile.Contains("AkAudio_"))
+			{
+				int StartIndex = BuildCsFile.IndexOf(StartPattern) + StartPattern.Length;
+				int StopIndex = BuildCsFile.IndexOf(EndPattern);
+				FoundPlatforms.Add(BuildCsFile.Substring(StartIndex, StopIndex - StartIndex));
+			}
 		}
 
-		// SoundFrame libs
-		if (Defs.Contains("AK_SOUNDFRAME") == true)
-		{
-			PublicAdditionalLibraries.Add("SFLib.lib");
-		}
-
-		// If AK_SOUNDFRAME is defined, make UnrealEd a dependency
-		if (BuildConfig.bBuildEditor == true)
-		{
-			PrivateDependencyModuleNames.Add("SlateCore");
-			PrivateDependencyModuleNames.Add("Slate");
-			PrivateDependencyModuleNames.Add("UnrealEd");
-		}
+		return FoundPlatforms;
 	}
 }

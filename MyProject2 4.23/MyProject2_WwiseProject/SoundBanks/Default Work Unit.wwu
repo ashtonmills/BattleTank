@@ -3,12 +3,11 @@
 	<SoundBanks>
 		<WorkUnit Name="Default Work Unit" ID="{B4C0848F-8F42-457D-825D-3A43DF0A7CEF}" PersistMode="Standalone">
 			<ChildrenList>
-				<SoundBank Name="BattleTankMain" ID="{BF7D05F5-97CD-4210-8589-4F81939B0E02}">
+				<SoundBank Name="Main" ID="{2EF7D3D5-F7EF-4155-86AB-5C6B917139E6}">
 					<ObjectInclusionList>
-						<ObjectRef Name="TurretStartMove" ID="{00BF49D6-7735-40A1-807F-DE31DAEFA1DD}" WorkUnitID="{01174776-9831-448F-8C67-C06AD77252EC}" Filter="7" Origin="Manual"/>
-						<ObjectRef Name="PlayTurretMoveloop" ID="{85AF8E90-960A-4926-8249-23E21E1D7B4B}" WorkUnitID="{01174776-9831-448F-8C67-C06AD77252EC}" Filter="7" Origin="Manual"/>
-						<ObjectRef Name="Tank_fire" ID="{BB8F2F5D-524C-4B36-8694-81A4A9F1F51A}" WorkUnitID="{01174776-9831-448F-8C67-C06AD77252EC}" Filter="7" Origin="Manual"/>
-						<ObjectRef Name="TurretStopMove" ID="{EE6E8941-C443-4D8C-9720-8FA6824335E8}" WorkUnitID="{01174776-9831-448F-8C67-C06AD77252EC}" Filter="7" Origin="Manual"/>
+						<ObjectRef Name="TankFire" ID="{AC338FB3-395E-454F-8A00-90DD77A282E2}" WorkUnitID="{01174776-9831-448F-8C67-C06AD77252EC}" Filter="7" Origin="Manual"/>
+						<ObjectRef Name="TankturretStopMove" ID="{61B1D0EC-D932-4788-99EC-3283C01015ED}" WorkUnitID="{01174776-9831-448F-8C67-C06AD77252EC}" Filter="7" Origin="Manual"/>
+						<ObjectRef Name="TankTurretStartMove" ID="{E479DE45-2215-4EE0-A56B-2D008D12ABC2}" WorkUnitID="{01174776-9831-448F-8C67-C06AD77252EC}" Filter="7" Origin="Manual"/>
 					</ObjectInclusionList>
 					<ObjectExclusionList/>
 					<GameSyncExclusionList/>

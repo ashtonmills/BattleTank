@@ -1,0 +1,12 @@
+Event	ID	Name			Wwise Object Path	Notes
+	297703765	TankFire			\Default Work Unit\TankFire	
+	2366629956	TankturretStopMove			\Default Work Unit\TankturretStopMove	
+	4031903226	TankTurretStartMove			\Default Work Unit\TankTurretStartMove	
+
+In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
+	11880792	TurretStopMove_04	E:\Projects\PersonalLearning\BattleTank\MyProject2\MyProject2_WwiseProject\.cache\Mac\SFX\TurretStopMove_04_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\TankTurret\TankTurretStopMove\TurretStopMove_04		346700
+	216737451	TurretStartMove_01	E:\Projects\PersonalLearning\BattleTank\MyProject2\MyProject2_WwiseProject\.cache\Mac\SFX\TurretStartMove_01_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\TankTurret\TankTurretStartMove\TurretStartMove_01		307796
+	599337074	CannonTank GUNS02_36_1	E:\Projects\PersonalLearning\BattleTank\MyProject2\MyProject2_WwiseProject\.cache\Mac\SFX\CannonTank GUNS02_36_1_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\TankTurret\TankFire\CannonTank GUNS02_36_1		1347288
+	617270310	TurretStopMove_05	E:\Projects\PersonalLearning\BattleTank\MyProject2\MyProject2_WwiseProject\.cache\Mac\SFX\TurretStopMove_05_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\TankTurret\TankTurretStopMove\TurretStopMove_05		345576
+	899113679	TankTurretMoveLoop_01	E:\Projects\PersonalLearning\BattleTank\MyProject2\MyProject2_WwiseProject\.cache\Mac\SFX\TankTurretMoveLoop_01_D79FB2B7.wem		\Actor-Mixer Hierarchy\Default Work Unit\TankTurret\TankTurretMoveLoop_01		1091680
+

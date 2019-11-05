@@ -33,6 +33,8 @@
 #include "Editor.h"
 #include "Framework/Docking/TabManager.h"
 
+#include "Platforms/AkUEPlatform.h"
+
 #define LOCTEXT_NAMESPACE "AkAudio"
 
 /** Whether we want the Cooking process to use Wwise to Re-generate banks.			*/
@@ -307,7 +309,7 @@ namespace WwiseBnkGenHelper
 		// Generating for all asked platforms.
 		if (in_PlatformNames.Num() == 0)
 		{
-			in_PlatformNames = GetWwisePlatforms();
+			in_PlatformNames = AkUnrealPlatformHelper::GetAllSupportedWwisePlatforms();
 		}
 
 		for (int32 PlatformIdx = 0; PlatformIdx < in_PlatformNames.Num(); PlatformIdx++)
@@ -641,91 +643,6 @@ namespace WwiseBnkGenHelper
 		IPlatformFile& PlatformFile;
 		FFileStatData StatData;
 	};
-
-	void GetWwisePlatforms(TArray< TSharedPtr<FString> >& WwisePlatforms)
-	{
-		WwisePlatforms = GetWwisePlatforms();
-	}
-
-	TSet<FString> GetSupportedPlatforms()
-	{
-		TSet<FString> SupportedPlatforms;
-#if UE_4_23_OR_LATER
-		for (const PlatformInfo::FPlatformInfo& Info : PlatformInfo::GetPlatformInfoArray())
-#else
-		for (const PlatformInfo::FPlatformInfo& Info : PlatformInfo::EnumeratePlatformInfoArray())
-#endif
-		{
-			if (Info.IsVanilla() && (Info.PlatformType == PlatformInfo::EPlatformType::Game) && (Info.PlatformInfoName != TEXT("AllDesktop")))
-			{
-				SupportedPlatforms.Add(Info.VanillaPlatformName.ToString());
-			}
-		}
-
-		IProjectManager& ProjectManager = IProjectManager::Get();
-		auto* CurrentProject = ProjectManager.GetCurrentProject();
-		if (CurrentProject && CurrentProject->TargetPlatforms.Num() > 0)
-		{
-			auto& TargetPlatforms = CurrentProject->TargetPlatforms;
-			TSet<FString> AvailablePlatforms;
-			for (const auto& TargetPlatform : TargetPlatforms)
-			{
-				AvailablePlatforms.Add(TargetPlatform.ToString());
-			}
-
-			auto Intersection = SupportedPlatforms.Intersect(AvailablePlatforms);
-			if (Intersection.Num() > 0)
-			{
-				SupportedPlatforms = Intersection;
-			}
-		}
-
-		return SupportedPlatforms;
-	}
-
-	TArray<TSharedPtr<FString> > GetWwisePlatforms()
-	{
-		static const TCHAR* PlatformNameAndroid = TEXT("Android");
-		static const TCHAR* PlatformNameIOS = TEXT("IOS");
-		static const TCHAR* PlatformNameLinux = TEXT("Linux");
-		static const TCHAR* PlatformNameLumin = TEXT("Lumin");
-		static const TCHAR* PlatformNameMac = TEXT("Mac");
-		static const TCHAR* PlatformNamePS4 = TEXT("PS4");
-		static const TCHAR* PlatformNameSwitch = TEXT("Switch");
-		static const TCHAR* PlatformNameWindows = TEXT("Windows");
-		static const TCHAR* PlatformNameXboxOne = TEXT("XboxOne");
-
-		static const TMap<FString, const TCHAR*> UnrealToWwisePlatformNameMap =
-		{
-			{ TEXT("Android"), PlatformNameAndroid },
-			{ TEXT("IOS"), PlatformNameIOS },
-			{ TEXT("LinuxNoEditor"), PlatformNameLinux },
-			{ TEXT("Lumin"), PlatformNameLumin },
-			{ TEXT("MacNoEditor"), PlatformNameMac },
-			{ TEXT("PS4"), PlatformNamePS4 },
-			{ TEXT("Switch"), PlatformNameSwitch },
-			{ TEXT("TVOS"), PlatformNameIOS },
-			{ TEXT("WindowsNoEditor"), PlatformNameWindows },
-			{ TEXT("XboxOne"), PlatformNameXboxOne },
-		};
-
-		TSet<const TCHAR*> TemporaryWwisePlatformNames;
-		for (const auto& AvailablePlatform : GetSupportedPlatforms())
-		{
-			if (const auto* WwisePlatformName = UnrealToWwisePlatformNameMap.FindRef(AvailablePlatform))
-			{
-				TemporaryWwisePlatformNames.Add(WwisePlatformName);
-			}
-		}
-
-		TArray<TSharedPtr<FString> > WwisePlatforms;
-		for (const auto WwisePlatformName : TemporaryWwisePlatformNames)
-		{
-			WwisePlatforms.Add(TSharedPtr<FString>(new FString(WwisePlatformName)));
-		}
-
-		return WwisePlatforms;
-	}
 
 	void FetchAttenuationInfo(const TMap<FString, TSet<UAkAudioEvent*> >& BankToEventSet)
 	{

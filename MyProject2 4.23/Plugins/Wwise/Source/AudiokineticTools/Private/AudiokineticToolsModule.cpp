@@ -34,15 +34,7 @@
 #include "ISettingsSection.h"
 #include "AkSettings.h"
 #include "AkSettingsPerUser.h"
-#include "InitializationSettings/AkAndroidInitializationSettings.h"
-#include "InitializationSettings/AkIOSInitializationSettings.h"
-#include "InitializationSettings/AkLinuxInitializationSettings.h"
-#include "InitializationSettings/AkLuminInitializationSettings.h"
-#include "InitializationSettings/AkMacInitializationSettings.h"
-#include "InitializationSettings/AkPS4InitializationSettings.h"
-#include "InitializationSettings/AkSwitchInitializationSettings.h"
-#include "InitializationSettings/AkWindowsInitializationSettings.h"
-#include "InitializationSettings/AkXBoxOneInitializationSettings.h"
+#include "Platforms/AkUEPlatform.h"
 #include "AkEventAssetBroker.h"
 #include "ComponentAssetBroker.h"
 #include "WaapiPicker/SWaapiPicker.h"
@@ -506,13 +498,11 @@ class FAudiokineticToolsModule : public IAudiokineticTools
 
 private:
 
-	struct BaseSettingsRegistrationStruct
+	struct SettingsRegistrationStruct
 	{
-		BaseSettingsRegistrationStruct(const FName& SectionName, const FText& DisplayName, const FText& Description)
-			: SectionName(SectionName), DisplayName(DisplayName), Description(Description)
+		SettingsRegistrationStruct(UClass* SettingsClass, const FName& SectionName, const FText& DisplayName, const FText& Description)
+			: SettingsClass(SettingsClass), SectionName(SectionName), DisplayName(DisplayName), Description(Description)
 		{}
-
-		virtual ~BaseSettingsRegistrationStruct() {}
 
 		void Register(ISettingsModule* SettingsModule) const
 		{
@@ -525,93 +515,53 @@ private:
 		}
 
 	private:
+		UClass* SettingsClass;
 		const FName SectionName;
 		const FText DisplayName;
 		const FText Description;
 
-		virtual UObject* SettingsObject() const = 0;
+		UObject* SettingsObject() const { return SettingsClass->GetDefaultObject(); }
 	};
 
-	template<typename SettingsClass>
-	struct SettingsRegistrationStruct : BaseSettingsRegistrationStruct
+	static TMap<FString, SettingsRegistrationStruct>& GetWwisePlatformNameToSettingsRegistrationMap()
 	{
-		SettingsRegistrationStruct(const FName& SectionName, const FText& DisplayName, const FText& Description)
-			: BaseSettingsRegistrationStruct(SectionName, DisplayName, Description)
-		{}
-
-	private:
-		virtual UObject* SettingsObject() const { return GetMutableDefault<SettingsClass>(); }
-	};
-
-	static const TMap<FString, const BaseSettingsRegistrationStruct*>& GetUnrealPlatformNameToSettingsRegistrationMap()
-	{
-		static const auto RegisterAndroid = SettingsRegistrationStruct<UAkAndroidInitializationSettings>("Android",
-			LOCTEXT("WwiseAndroidSettingsName", "Android"),
-			LOCTEXT("WwiseAndroidSettingsDescription", "Configure the Wwise Android Initialization Settings"));
-
-		static const auto RegisterIOS = SettingsRegistrationStruct<UAkIOSInitializationSettings>("iOS",
-			LOCTEXT("WwiseIOSSettingsName", "iOS"),
-			LOCTEXT("WwiseIOSSettingsDescription", "Configure the Wwise iOS Initialization Settings"));
-
-		static const auto RegisterLinux = SettingsRegistrationStruct<UAkLinuxInitializationSettings>("Linux",
-			LOCTEXT("WwiseLinuxSettingsName", "Linux"),
-			LOCTEXT("WwiseLinuxSettingsDescription", "Configure the Wwise Linux Initialization Settings"));
-
-		static const auto RegisterLumin = SettingsRegistrationStruct<UAkLuminInitializationSettings>("Lumin",
-			LOCTEXT("WwiseLuminSettingsName", "Lumin"),
-			LOCTEXT("WwiseLuminSettingsDescription", "Configure the Wwise Lumin Initialization Settings"));
-
-		static const auto RegisterMac = SettingsRegistrationStruct<UAkMacInitializationSettings>("Mac",
-			LOCTEXT("WwiseMacSettingsName", "Mac"),
-			LOCTEXT("WwiseMacSettingsDescription", "Configure the Wwise Mac Initialization Settings"));
-
-		static const auto RegisterPS4 = SettingsRegistrationStruct<UAkPS4InitializationSettings>("PS4",
-			LOCTEXT("WwisePS4SettingsName", "PS4"),
-			LOCTEXT("WwisePS4SettingsDescription", "Configure the Wwise PS4 Initialization Settings"));
-
-		static const auto RegisterSwitch = SettingsRegistrationStruct<UAkSwitchInitializationSettings>("Switch",
-			LOCTEXT("WwiseSwitchSettingsName", "Switch"),
-			LOCTEXT("WwiseSwitchSettingsDescription", "Configure the Wwise Switch Initialization Settings"));
-
-		static const auto RegisterWindows = SettingsRegistrationStruct<UAkWindowsInitializationSettings>("Windows",
-			LOCTEXT("WwiseWindowsSettingsName", "Windows"),
-			LOCTEXT("WwiseWindowsSettingsDescription", "Configure the Wwise Windows Initialization Settings"));
-
-		static const auto RegisterXboxOne = SettingsRegistrationStruct<UAkXBoxOneInitializationSettings>("XBoxOne",
-			LOCTEXT("WwiseXBoxOneSettingsName", "XBoxOne"),
-			LOCTEXT("WwiseXBoxOneSettingsDescription", "Configure the Wwise XBoxOne Initialization Settings"));
-
-		static const TMap<FString, const BaseSettingsRegistrationStruct*> UnrealPlatformNameToWwiseSettingsRegistrationMap =
+		static TMap<FString, SettingsRegistrationStruct> WwisePlatformNameToWwiseSettingsRegistrationMap;
+		if (WwisePlatformNameToWwiseSettingsRegistrationMap.Num() == 0)
 		{
-			{ TEXT("Android"), &RegisterAndroid },
-			{ TEXT("IOS"), &RegisterIOS },
-			{ TEXT("LinuxNoEditor"), &RegisterLinux },
-			{ TEXT("Lumin"), &RegisterLumin },
-			{ TEXT("MacNoEditor"), &RegisterMac },
-			{ TEXT("PS4"), &RegisterPS4 },
-			{ TEXT("Switch"), &RegisterSwitch },
-			{ TEXT("TVOS"), &RegisterIOS },
-			{ TEXT("WindowsNoEditor"), &RegisterWindows },
-			{ TEXT("XboxOne"), &RegisterXboxOne },
-		};
+			auto RegisterIntegrationSettings = SettingsRegistrationStruct(UAkSettings::StaticClass(),
+				"Integration",
+				LOCTEXT("WwiseIntegrationSettingsName", "Integration Settings"),
+				LOCTEXT("WwiseIntegrationSettingsDescription", "Configure the Wwise Integration"));
 
-		return UnrealPlatformNameToWwiseSettingsRegistrationMap;
+			auto RegisterPerUserSettings = SettingsRegistrationStruct(UAkSettingsPerUser::StaticClass(),
+				"User Settings",
+				LOCTEXT("WwiseRuntimePerUserSettingsName", "User Settings"),
+				LOCTEXT("WwiseRuntimePerUserSettingsDescription", "Configure the Wwise Integration per user"));
+
+			WwisePlatformNameToWwiseSettingsRegistrationMap.Add(FString("Integration"), RegisterIntegrationSettings);
+			WwisePlatformNameToWwiseSettingsRegistrationMap.Add(FString("User"), RegisterPerUserSettings);
+
+			for (const auto& AvailablePlatform : AkUnrealPlatformHelper::GetAllSupportedUnrealPlatforms())
+			{
+				FString SettingsClassName = FString::Format(TEXT("Ak{0}InitializationSettings"), { *AvailablePlatform });
+				UClass* SettingsClass = FindObject<UClass>(ANY_PACKAGE, *SettingsClassName);
+				if (SettingsClass)
+				{
+					FString CategoryNameKey = FString::Format(TEXT("Wwise{0}SettingsName"), { *AvailablePlatform });
+					FString DescriptionNameKey = FString::Format(TEXT("Wwise{0}SettingsDescription"), { *AvailablePlatform });
+					FString DescriptionText = FString::Format(TEXT("Configure the Wwise {0} Initialization Settings"), { *AvailablePlatform });
+					auto PlatformNameText = FText::FromString(*AvailablePlatform);
+					auto RegisterPlatform = SettingsRegistrationStruct(SettingsClass, FName(*AvailablePlatform),
+						PlatformNameText,
+						FText::Format(LOCTEXT("WwiseSettingsDescription", "Configure the Wwise {0} Initialization Settings"), PlatformNameText));
+					WwisePlatformNameToWwiseSettingsRegistrationMap.Add(*AvailablePlatform, RegisterPlatform);
+				}
+			}
+		}
+		return WwisePlatformNameToWwiseSettingsRegistrationMap;
 	}
 
-	static TSet<const BaseSettingsRegistrationStruct*> GetDefaultSettingsRegistrationStructs()
-	{
-		static const auto RegisterIntegrationSettings = SettingsRegistrationStruct<UAkSettings>("Integration",
-			LOCTEXT("WwiseIntegrationSettingsName", "Integration Settings"),
-			LOCTEXT("WwiseIntegrationSettingsDescription", "Configure the Wwise Integration"));
-
-		static const auto RegisterPerUserSettings = SettingsRegistrationStruct<UAkSettingsPerUser>("User Settings",
-			LOCTEXT("WwiseRuntimePerUserSettingsName", "User Settings"),
-			LOCTEXT("WwiseRuntimePerUserSettingsDescription", "Configure the Wwise Integration per user"));
-
-		return { &RegisterIntegrationSettings, &RegisterPerUserSettings };
-	}
-
-	TSet<const BaseSettingsRegistrationStruct*> RegisteredSettings;
+	TSet<FString> RegisteredSettingsNames;
 
 	void RegisterSettings()
 	{
@@ -619,32 +569,33 @@ private:
 		{
 			auto UpdatePlatformSettings = [SettingsModule, this]
 			{
-				auto SettingsThatShouldBeRegistered = GetDefaultSettingsRegistrationStructs();
+				auto SettingsRegistrationMap = GetWwisePlatformNameToSettingsRegistrationMap();
 
-				auto& Map = GetUnrealPlatformNameToSettingsRegistrationMap();
-				for (const auto& AvailablePlatform : WwiseBnkGenHelper::GetSupportedPlatforms())
+				TSet<FString> SettingsThatShouldBeRegistered = { FString("Integration"), FString("User") };
+				
+				for (const auto& AvailablePlatform : AkUnrealPlatformHelper::GetAllSupportedUnrealPlatformsForProject())
 				{
-					if (const auto* SettingsStruct = Map.FindRef(AvailablePlatform))
+					if (SettingsRegistrationMap.Contains(AvailablePlatform))
 					{
-						SettingsThatShouldBeRegistered.Add(SettingsStruct);
+						SettingsThatShouldBeRegistered.Add(AvailablePlatform);
 					}
 				}
 
-				auto SettingsToBeUnregistered = RegisteredSettings.Difference(SettingsThatShouldBeRegistered);
-				for (const auto* SettingsStruct : SettingsToBeUnregistered)
+				auto SettingsToBeUnregistered = RegisteredSettingsNames.Difference(SettingsThatShouldBeRegistered);
+				for (const auto& SettingsName : SettingsToBeUnregistered)
 				{
-					SettingsStruct->Unregister(SettingsModule);
-					RegisteredSettings.Remove(SettingsStruct);
+					SettingsRegistrationMap[SettingsName].Unregister(SettingsModule);
+					RegisteredSettingsNames.Remove(SettingsName);
 				}
 
-				auto SettingsToBeRegistered = SettingsThatShouldBeRegistered.Difference(RegisteredSettings);
-				for (const auto* SettingsStruct : SettingsToBeRegistered)
+				auto SettingsToBeRegistered = SettingsThatShouldBeRegistered.Difference(RegisteredSettingsNames);
+				for (const auto& SettingsName : SettingsToBeRegistered)
 				{
-					if (RegisteredSettings.Contains(SettingsStruct))
+					if (RegisteredSettingsNames.Contains(SettingsName))
 						continue;
 
-					SettingsStruct->Register(SettingsModule);
-					RegisteredSettings.Add(SettingsStruct);
+					SettingsRegistrationMap[SettingsName].Register(SettingsModule);
+					RegisteredSettingsNames.Add(SettingsName);
 				}
 			};
 
@@ -659,11 +610,12 @@ private:
 	{
 		if (auto SettingsModule = FModuleManager::GetModulePtr<ISettingsModule>("Settings"))
 		{
-			for (const auto* SettingsStruct : RegisteredSettings)
+			auto SettingsRegistrationMap = GetWwisePlatformNameToSettingsRegistrationMap();
+			for (const auto& SettingsName : RegisteredSettingsNames)
 			{
-				SettingsStruct->Unregister(SettingsModule);
+				SettingsRegistrationMap[SettingsName].Unregister(SettingsModule);
 			}
-			RegisteredSettings.Empty();
+			RegisteredSettingsNames.Empty();
 		}
 	}
 

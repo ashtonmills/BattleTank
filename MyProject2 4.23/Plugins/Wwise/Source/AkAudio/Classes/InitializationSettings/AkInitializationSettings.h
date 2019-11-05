@@ -246,8 +246,6 @@ struct FAkCommonInitializationSettingsWithSampleRate : public FAkCommonInitializ
 
 	UPROPERTY(Config, EditAnywhere, Category = "Common Settings", meta = (ToolTip = "Sampling Rate. Default is 48000 Hz. Use 24000hz for low quality. Any positive reasonable sample rate is supported; however, be careful setting a custom value. Using an odd or really low sample rate may cause the sound engine to malfunction."))
 	uint32 SampleRate = 48000;
-
-	void FillInitializationStructure(FAkInitializationStructure& InitializationStructure) const;
 };
 
 

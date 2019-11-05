@@ -21,7 +21,7 @@ under the Apache License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES
 OR CONDITIONS OF ANY KIND, either express or implied. See the Apache License for
 the specific language governing permissions and limitations under the License.
 
-  Version: v2019.1.4  Build: 7065
+  Version: v2019.1.5  Build: 7093
   Copyright (c) 2006-2019 Audiokinetic Inc.
 *******************************************************************************/
 
@@ -155,7 +155,7 @@ namespace AK
 			/// and can receive the Global Value if there was no GameObject specific value, and even the 
 			/// default value is there was no Global value either.
 			/// \sa 
-			/// - \ref GetRTPCValue
+			/// - GetRTPCValue
 			enum RTPCValue_type
 			{
 				RTPCValue_Default,		///< The value is the Default RTPC.
@@ -177,7 +177,7 @@ namespace AK
 			/// \return AK_Success if succeeded, AK_IDNotFound if the game object was not registered, or AK_Fail if the RTPC value could not be obtained
 			/// \sa 
 			/// - \ref soundengine_rtpc
-			/// - \ref RTPCValue_type
+			/// - RTPCValue_type
 			AK_EXTERNAPIFUNC(AKRESULT, GetRTPCValue)(
 				AkRtpcID in_rtpcID, 				///< ID of the RTPC
 				AkGameObjectID in_gameObjectID,		///< Associated game object ID, ignored if io_rValueType is RTPCValue_Global.
@@ -200,7 +200,7 @@ namespace AK
 			/// \return AK_Success if succeeded, AK_IDNotFound if the game object was not registered or the rtpc name could not be found, or AK_Fail if the RTPC value could not be obtained
 			/// \sa 
 			/// - \ref soundengine_rtpc
-			/// - \ref RTPCValue_type
+			/// - RTPCValue_type
 			AK_EXTERNAPIFUNC(AKRESULT, GetRTPCValue)(
 				const wchar_t* in_pszRtpcName,		///< String name of the RTPC
 				AkGameObjectID in_gameObjectID,		///< Associated game object ID, ignored if io_rValueType is RTPCValue_Global.
@@ -223,7 +223,7 @@ namespace AK
 			/// \return AK_Success if succeeded, AK_IDNotFound if the game object was not registered or the rtpc name could not be found, or AK_Fail if the RTPC value could not be obtained
 			/// \sa 
 			/// - \ref soundengine_rtpc
-			/// - \ref RTPCValue_type
+			/// - RTPCValue_type
 			AK_EXTERNAPIFUNC(AKRESULT, GetRTPCValue)(
 				const char* in_pszRtpcName,			///< String name of the RTPC
 				AkGameObjectID in_gameObjectID,		///< Associated game object ID, ignored if io_rValueType is RTPCValue_Global.
@@ -392,7 +392,7 @@ namespace AK
 			/// Being active means that either a sound is playing or pending to be played using this game object.
 			/// The caller is responsible for calling Term() on the list when the list is not required anymore
 			/// \sa 
-			/// - \ref GetActiveGameObjects
+			/// - GetActiveGameObjects
 			typedef AkArray<AkGameObjectID, AkGameObjectID, ArrayPoolDefault, 32> AkGameObjectsList;
 
 			/// Fill the provided list with all the game object IDs that are currently active in the sound engine.
@@ -400,7 +400,7 @@ namespace AK
 			/// After calling this function, the list will contain the list of all game objects that are currently active in the sound engine.
 			/// Being active means that either a sound is playing or pending to be played using this game object.
 			/// \sa 
-			/// - \ref AkGameObjectsList
+			/// - AkGameObjectsList
 			AK_EXTERNAPIFUNC( AKRESULT, GetActiveGameObjects )( 
 				AkGameObjectsList& io_GameObjectList	///< returned list of active game objects.
 				);
@@ -472,7 +472,7 @@ namespace AK
 			/// \endaknote
 			///
 			/// \sa 
-			/// - \ref AkRadiusList
+			/// - AkRadiusList
 			AK_EXTERNAPIFUNC( AKRESULT, GetMaxRadius )(
 				AkRadiusList & io_RadiusList	///< List that will be filled with AK::SoundEngine::Query::GameObjDst objects.
 				);

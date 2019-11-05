@@ -5,9 +5,8 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
-#include "AkComponent.h"
-#include "E:/Projects/PersonalLearning/BattleTank/MyProject2 4.23/MyProject2_WwiseProject/GeneratedSoundBanks/Wwise_IDs.h"
 #include "Runtime/CoreUObject/Public/UObject/Class.h"
+#include "AkComponent.h"
 #include "Tank.generated.h"
 
 //forward declarations
@@ -24,11 +23,16 @@ class MYPROJECT2_API ATank : public APawn
 public: 
 	void AimAt(FVector HitLocation);
 
+	void TurretTurnSound(float TurnSpeed);
+
 	UFUNCTION(BlueprintCallable,Category = Setup)
 	void SetBarrelReference(UTankBarrel* BarrelToSet);
 
 	UFUNCTION(BlueprintCallable, Category = Setup)
 	void SetTurretReference(UTankTurret* TurretToSet);
+
+	UFUNCTION(BlueprintCallable, Category = Setup)
+	void SetAkReference(UAkComponent* AkComponentToSet);
 
 	UFUNCTION(BlueprintCallable, Category = Combat)
 		void Fire();
@@ -55,15 +59,15 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
 		float ReloadTimeInSeconds = 3;
 
-	UFUNCTION(BlueprintImplementableEvent, Category = "Ashton")
-		void WwisePostEvent();
-
-	void setWwiseComponenet();
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool isPlayerPawn = 1;
 
 private : 
 	//lcoal barrel reference for spawning projectile
+	UAkComponent* WwiseComponent =nullptr;
 	UTankBarrel* Barrel = nullptr;
+	float CurrentTurretTurnSpeed;
+	bool bIsTurning = false;
 	double LastFireTime = 0;
-	UAkComponent* WwiseComponent = nullptr;
 }
 ;

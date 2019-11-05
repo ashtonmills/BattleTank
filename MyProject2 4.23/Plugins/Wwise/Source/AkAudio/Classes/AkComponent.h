@@ -271,7 +271,7 @@ public:
 	 *
 	 * @param inUseReverbVolumes	Whether to use reverb volumes or not.
 	 */
-	UFUNCTION(BlueprintCallable, BlueprintCosmetic, Category="Audiokinetic|AkComponent", meta = (DeprecatedFunction, DeprecationMessage = "Please use the \"UseReverbVolume\" property"))
+	UFUNCTION(BlueprintCallable, BlueprintCosmetic, Category="Audiokinetic|AkComponent", meta = (DeprecatedFunction, DeprecationMessage = "Please use the \"UseReverbVolume\" property", ScriptName="DEPRECATED_UseReverbVolumes"))
 	void UseReverbVolumes(bool inUseReverbVolumes);
 
 	// Early Reflections

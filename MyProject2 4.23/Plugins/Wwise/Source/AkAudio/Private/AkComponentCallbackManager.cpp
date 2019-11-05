@@ -52,10 +52,17 @@ void FAkBlueprintDelegateEventCallbackPackage::HandleAction(AkCallbackType in_eT
 		UAkCallbackInfo* CachedAkCallbackInfo = AkCallbackTypeHelpers::GetBlueprintableCallbackInfo(in_eType, in_pCallbackInfo);
 		EAkCallbackType BlueprintCallbackType = AkCallbackTypeHelpers::GetBlueprintCallbackTypeFromAkCallbackType(in_eType);
 		auto CachedBlueprintCallback = BlueprintCallback;
-		AsyncTask(ENamedThreads::GameThread, [CachedAkCallbackInfo, BlueprintCallbackType, CachedBlueprintCallback]()
+		AsyncTask(ENamedThreads::GameThread, [CachedAkCallbackInfo, BlueprintCallbackType, CachedBlueprintCallback]
 		{
 			CachedBlueprintCallback.ExecuteIfBound(BlueprintCallbackType, CachedAkCallbackInfo);
-			FAkAudioDevice::Get()->GetAkCallbackInfoPool()->Release(CachedAkCallbackInfo);
+
+			if (auto AudioDevice = FAkAudioDevice::Get())
+			{
+				if (auto CallbackInfoPool = AudioDevice->GetAkCallbackInfoPool())
+				{
+					CallbackInfoPool->Release(CachedAkCallbackInfo);
+				}
+			}
 		});
 	}
 }

@@ -9,6 +9,7 @@
 #include "AkAudioDevice.h"
 #include "AkAudioBankGenerationHelpers.h"
 #include "AkWaapiClient.h"
+#include "Platforms/AkUEPlatform.h"
 #include "AssetRegistryModule.h"
 #include "Dom/JsonObject.h"
 #include "Interfaces/ITargetPlatformManagerModule.h"
@@ -185,7 +186,7 @@ void SGenerateSoundBanks::PopulateList(void)
 	}
 
 	// Get available platforms
-	PlatformNames = WwiseBnkGenHelper::GetWwisePlatforms();
+	PlatformNames = AkUnrealPlatformHelper::GetAllSupportedWwisePlatforms(true);
 }
 
 FReply SGenerateSoundBanks::OnKeyDown( const FGeometry& MyGeometry, const FKeyEvent& InKeyboardEvent )

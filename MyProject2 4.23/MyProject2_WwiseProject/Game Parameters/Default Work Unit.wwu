@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WwiseDocument Type="WorkUnit" ID="{C562927F-208A-4A55-BDBF-00CE30CD74A8}" SchemaVersion="94">
 	<GameParameters>
-		<WorkUnit Name="Default Work Unit" ID="{C562927F-208A-4A55-BDBF-00CE30CD74A8}" PersistMode="Standalone">
-			<ChildrenList>
-				<GameParameter Name="TurretMovementRate" ID="{AEAA5AA5-A26A-4848-990F-FD7B56C36271}"/>
-			</ChildrenList>
-		</WorkUnit>
+		<WorkUnit Name="Default Work Unit" ID="{C562927F-208A-4A55-BDBF-00CE30CD74A8}" PersistMode="Standalone"/>
 	</GameParameters>
 </WwiseDocument>

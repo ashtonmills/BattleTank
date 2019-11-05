@@ -271,7 +271,7 @@ struct FAkWaapiClientImpl
 #endif
 };
 
-inline bool FAkWaapiClient::JsonObjectToString(const TSharedRef<FJsonObject>& in_jsonObject, FString& ou_jsonObjectString)
+bool FAkWaapiClient::JsonObjectToString(const TSharedRef<FJsonObject>& in_jsonObject, FString& ou_jsonObjectString)
 {
 	bool eResult = true;
 	// Make sure the arguments are valid Json data.

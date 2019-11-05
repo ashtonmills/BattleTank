@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankPlayerController.h"
+#include "AkComponent.h"
 #include "Tank.h"
 
 
@@ -18,15 +19,30 @@ void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 	SetControlledTank();
-	if (MyTank)
-	{
-		UE_LOG(LogTemp,Warning,TEXT("PlayerController possessing %s"), *MyTank->GetName())
-	}
-	else
-	{
-		UE_LOG(LogTemp, Error, TEXT("PlayerController not possessing a tank"))
-	}
-
+//	if (MyTank)
+//	{
+//		UAkComponent* PlayerAkComponent = nullptr;
+//		PlayerAkComponent = MyTank->FindComponentByClass<UAkComponent>();
+//		if (PlayerAkComponent)
+//		{
+//			PlayerAkComponent->IsDefaultListener = true;
+//			if (PlayerAkComponent->IsDefaultListener == true)
+//			{
+//				UE_LOG(LogTemp, Warning, TEXT("IsDefaultListener set to true on PlayerAkComponent"));
+//			}
+//			else
+//			{
+//				UE_LOG(LogTemp, Warning, TEXT("PlayerAkComponent not set to true"));
+//			}
+//		}
+//		else
+//		{
+//			UE_LOG(LogTemp, Warning, TEXT("PlayerAkComponent not set"));
+//			//test comment
+//		}
+//
+//	}
+//			UE_LOG(LogTemp, Warning, TEXT("yet Another different message"));
 }
 
 void ATankPlayerController::Tick(float DeltaTime)

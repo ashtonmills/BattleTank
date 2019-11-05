@@ -21,7 +21,7 @@ under the Apache License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES
 OR CONDITIONS OF ANY KIND, either express or implied. See the Apache License for
 the specific language governing permissions and limitations under the License.
 
-  Version: v2019.1.4  Build: 7065
+  Version: v2019.1.5  Build: 7093
   Copyright (c) 2006-2019 Audiokinetic Inc.
 *******************************************************************************/
 
@@ -303,7 +303,7 @@ namespace AK
 		/// Return the channel configuration of the parent node that this effect will mix into.  GetParentChannelConfig() may be used to set the output configuration of an
 		/// out-of-place effect to avoid additional up/down mixing stages.  Please note however that it is possible for out-of-place effects later in the chain to change
 		/// this configuration.
-		/// Returns !out_channelConfig.IsValid() when the node is an actor-mixer (voice), because a voice may be routed to several mix chains.
+		/// Returns out_channelConfig.IsValid() == false when the node is an actor-mixer (voice), because a voice may be routed to several mix chains.
 		/// \return AK_Success if the channel config of the primary, direct parent bus could be determined, AK_Fail otherwise.
 		virtual AKRESULT GetParentChannelConfig(
 			AkChannelConfig& out_channelConfig	///< Channel configuration of parent node (downstream bus).
@@ -956,7 +956,7 @@ namespace AK
 		///	The plug-in also receives a pointer to its associated parameter node interface (AK::IAkPluginParam).Most plug-ins will want to keep a reference to the associated parameter node to be able to retrieve parameters at runtime. Refer to \ref iakeffectparam_communication for more details.
 		///	All of these interfaces will remain valid throughout the plug-in's lifespan so it is safe to keep an internal reference to them when necessary.
 		///	Plug-ins also receive the output audio format(which stays the same during the lifespan of the plug-in) to be able to allocate memory and setup processing for a given channel configuration.
-		///	Note that the channel configuration is suggestive and may even be specified as !AkChannelConfig::IsValid().The plugin is free to determine the true channel configuration(this is an io parameter).
+		///	Note that the channel configuration is suggestive and may even be specified as AkChannelConfig::IsValid() ==  false.The plugin is free to determine the true channel configuration(this is an io parameter).
 		///
 		/// \return AK_Success if successful.
 		/// \return AK_NotCompatible if the system doesn't support this sink type.  Return this if you want to fall back to the default sinks.  This sink will never be requested again.  Do not return this code if the device is simply unplugged.
@@ -967,7 +967,7 @@ namespace AK
 			IAkPluginMemAlloc *		in_pAllocator,			///< Interface to memory allocator to be used by the effect.
 			IAkSinkPluginContext *	in_pSinkPluginContext,	///< Interface to sink plug-in's context.
 			IAkPluginParam *		in_pParams,				///< Interface to plug-in parameters.
-			AkAudioFormat &			io_rFormat				///< Audio data format of the input signal. Note that the channel configuration is suggestive and may even be specified as !AkChannelConfig::IsValid(). The plugin is free to determine the true channel configuration.
+			AkAudioFormat &			io_rFormat				///< Audio data format of the input signal. Note that the channel configuration is suggestive and may even be specified as AkChannelConfig::IsValid() == false. The plugin is free to determine the true channel configuration.
 			) = 0;
 
 		/// Obtain the number of audio frames that should be processed by the sound engine and presented

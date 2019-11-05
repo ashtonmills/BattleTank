@@ -1,28 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<IncrementalBankBuild Version="6" Flags="240381544">
+<IncrementalBankBuild Version="6" Flags="601859981">
 	<Platform GUID="{BEFBBEE8-E946-406C-A7B8-B2CBEDF99AB8}">
 		<Banks>
 			<Language ID="393239870">
-				<File Name="BattleTankMain" Hash="612044731" Timestamp="1571646879"/>
-				<File Name="Init" Hash="438900046" Timestamp="1571394834"/>
+				<File Name="BattleTankMain" Hash="1780920048" Timestamp="1571653678"/>
+				<File Name="Init" Hash="2279659568" Timestamp="1571923937"/>
+				<File Name="Main" Hash="937682578" Timestamp="1572620725"/>
 			</Language>
 		</Banks>
 		<XMLInfo>
 			<Language ID="-1">
-				<File Name="" Hash="3644319724" Timestamp="1571646879"/>
+				<File Name="" Hash="497368292" Timestamp="1572620725"/>
 			</Language>
 		</XMLInfo>
 	</Platform>
 	<Platform GUID="{7E7C4AFD-0E02-4A55-9C2F-0EDAAA29BAEB}">
 		<Banks>
 			<Language ID="393239870">
-				<File Name="BattleTankMain" Hash="612044731" Timestamp="1571647011"/>
-				<File Name="Init" Hash="1365410236" Timestamp="1571647011"/>
+				<File Name="BattleTankMain" Hash="1780920048" Timestamp="1571653678"/>
+				<File Name="Init" Hash="1182415902" Timestamp="1572620731"/>
+				<File Name="Main" Hash="937682578" Timestamp="1572620731"/>
 			</Language>
 		</Banks>
 		<XMLInfo>
 			<Language ID="-1">
-				<File Name="" Hash="1975858242" Timestamp="1571647011"/>
+				<File Name="" Hash="104634899" Timestamp="1572620731"/>
 			</Language>
 		</XMLInfo>
 	</Platform>

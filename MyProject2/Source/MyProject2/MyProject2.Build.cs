@@ -8,7 +8,7 @@ public class MyProject2 : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore","AkAudio","AudiokineticTools" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore","AkAudio" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 

@@ -6,7 +6,7 @@
 
 #include "AkComponent.h"
 #include "AkAudioDevice.h"
-#include "AkInclude.h"
+#include "Platforms/AkUEPlatform.h"
 #include "Engine/Texture2D.h"
 #include "Components/BillboardComponent.h"
 #include "GameFramework/PlayerController.h"
@@ -396,8 +396,8 @@ void UAkComponent::SetSwitch(FString SwitchGroup, FString SwitchState)
 {
 	if (FAkAudioDevice::Get())
 	{
-		auto SwitchGroupID = AK::SoundEngine::GetIDFromString(TCHAR_TO_AK(*SwitchGroup));
-		auto SwitchStateID = AK::SoundEngine::GetIDFromString(TCHAR_TO_AK(*SwitchState));
+		uint32 SwitchGroupID = AK::SoundEngine::GetIDFromString(TCHAR_TO_AK(*SwitchGroup));
+		uint32 SwitchStateID = AK::SoundEngine::GetIDFromString(TCHAR_TO_AK(*SwitchState));
 
 		AK::SoundEngine::SetSwitch(SwitchGroupID, SwitchStateID, GetAkGameObjectID());
 	}

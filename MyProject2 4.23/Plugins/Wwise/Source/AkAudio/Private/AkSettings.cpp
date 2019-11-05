@@ -7,17 +7,8 @@
 
 #if WITH_EDITOR
 #include "Settings/ProjectPackagingSettings.h"
-
+#include "Platforms/AkUEPlatform.h"
 #include "InitializationSettings/AkInitializationSettings.h"
-#include "InitializationSettings/AkAndroidInitializationSettings.h"
-#include "InitializationSettings/AkIOSInitializationSettings.h"
-#include "InitializationSettings/AkLinuxInitializationSettings.h"
-#include "InitializationSettings/AkLuminInitializationSettings.h"
-#include "InitializationSettings/AkMacInitializationSettings.h"
-#include "InitializationSettings/AkPS4InitializationSettings.h"
-#include "InitializationSettings/AkSwitchInitializationSettings.h"
-#include "InitializationSettings/AkWindowsInitializationSettings.h"
-#include "InitializationSettings/AkXBoxOneInitializationSettings.h"
 #endif
 
 #include "UObject/UnrealType.h"
@@ -27,14 +18,24 @@
 
 namespace AkSettings_Helper
 {
-	template<typename TAkInitializationSettings>
-	void MigrateMultiCoreRendering(bool EnableMultiCoreRendering)
+	void MigrateMultiCoreRendering(bool EnableMultiCoreRendering, const FString& PlatformName)
 	{
-		if (auto* Settings = GetMutableDefault<TAkInitializationSettings>())
+		FString SettingsClassName = FString::Format(TEXT("Ak{0}InitializationSettings"), { *PlatformName });
+		auto* SettingsClass = FindObject<UClass>(ANY_PACKAGE, *SettingsClassName);
+		if (!SettingsClass)
 		{
-			Settings->AdvancedSettings.EnableMultiCoreRendering = EnableMultiCoreRendering;
-			Settings->UpdateDefaultConfigFile();
+			return;
 		}
+
+		auto* MigrationFunction = SettingsClass->FindFunctionByName(TEXT("MigrateMultiCoreRendering"));
+		auto* Settings = SettingsClass->GetDefaultObject();
+		if (!MigrationFunction || !Settings)
+		{
+			return;
+		}
+
+		Settings->ProcessEvent(MigrationFunction, &EnableMultiCoreRendering);
+		Settings->UpdateDefaultConfigFile();
 	}
 }
 
@@ -82,16 +83,10 @@ void UAkSettings::PostInitProperties()
 	{
 		MigratedEnableMultiCoreRendering = true;
 
-		using namespace AkSettings_Helper;
-		const auto Enabled = bEnableMultiCoreRendering_DEPRECATED;
-		MigrateMultiCoreRendering<UAkAndroidInitializationSettings>(Enabled);
-		MigrateMultiCoreRendering<UAkLinuxInitializationSettings>(Enabled);
-		MigrateMultiCoreRendering<UAkLuminInitializationSettings>(Enabled);
-		MigrateMultiCoreRendering<UAkMacInitializationSettings>(Enabled);
-		MigrateMultiCoreRendering<UAkPS4InitializationSettings>(Enabled);
-		MigrateMultiCoreRendering<UAkSwitchInitializationSettings>(Enabled);
-		MigrateMultiCoreRendering<UAkWindowsInitializationSettings>(Enabled);
-		MigrateMultiCoreRendering<UAkXBoxOneInitializationSettings>(Enabled);
+		for (const auto& PlatformName : AkUnrealPlatformHelper::GetAllSupportedWwisePlatforms())
+		{
+			AkSettings_Helper::MigrateMultiCoreRendering(bEnableMultiCoreRendering_DEPRECATED, *PlatformName);
+		}
 	}
 #endif // WITH_EDITOR
 }

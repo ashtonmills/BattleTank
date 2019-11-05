@@ -21,7 +21,7 @@ under the Apache License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES
 OR CONDITIONS OF ANY KIND, either express or implied. See the Apache License for
 the specific language governing permissions and limitations under the License.
 
-  Version: v2019.1.4  Build: 7065
+  Version: v2019.1.5  Build: 7093
   Copyright (c) 2006-2019 Audiokinetic Inc.
 *******************************************************************************/
 
@@ -168,6 +168,8 @@ namespace AK
 			ErrorCode_AudioDeviceRemoveFailure,
 			ErrorCode_AudioDeviceNotFound,
 			ErrorCode_AudioDeviceNotValid,
+
+			ErrorCode_MediaDuplicationLength,
 
 			Num_ErrorCodes // THIS STAYS AT END OF ENUM
 		};
@@ -377,12 +379,15 @@ AKTEXT("AK::SoundEngine::AddOutput()/ReplaceOutput() - Device ShareSet not found
 AKTEXT("Not enough memory to start sound."),	//ErrorCode_NotEnoughMemoryToStart
 AKTEXT("Error while decoding Opus header."),	//ErrorCode_UnkownOpusError
 
-			AKTEXT("The Output Device specified by AddOutput() or Init() could not be initialized."), //ErrorCode_AudioDeviceInitFailure
-			AKTEXT("ReplaceOutput could not properly remove old output device."), // ErrorCode_AudioDeviceRemoveFailure
-			AKTEXT("Device ID to remove not found as an active device."), // ErrorCode_AudioDeviceNotFound
-			AKTEXT("Device ID not recognized by platform or is disabled."), // ErrorCode_AudioDeviceNotValid
+AKTEXT("The Output Device specified by AddOutput() or Init() could not be initialized."), //ErrorCode_AudioDeviceInitFailure
+AKTEXT("ReplaceOutput could not properly remove old output device."), // ErrorCode_AudioDeviceRemoveFailure
+AKTEXT("Device ID to remove not found as an active device."), // ErrorCode_AudioDeviceNotFound
+AKTEXT("Device ID not recognized by platform or is disabled."), // ErrorCode_AudioDeviceNotValid
+
+AKTEXT("Duplicated media has different length in two separate banks.  Stopping sound."), // ErrorCode_MediaDuplicationLength
 		};
 	}
+
 }
 #endif // AK_MONITOR_IMPLEMENT_ERRORCODES
 

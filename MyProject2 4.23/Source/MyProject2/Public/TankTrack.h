@@ -21,5 +21,5 @@ public:
 	
 	//Maxforce pre track in Newtons
 	UPROPERTY(EditDefaultsOnly, Category = Movement)
-		float TrackMaxDrivingForce = 400000; //assuming a 40 tonne tank, and 1g acceleration
+		float TrackMaxDrivingForce;
 };

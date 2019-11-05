@@ -8,7 +8,7 @@
 // Sets default values
 ATank::ATank()
 {
- 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.GetComponentByClass
+ 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	//thsi is how we can creat custom components for our actors, using c++, rather than adding them in BP
@@ -21,8 +21,6 @@ ATank::ATank()
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
-
-	//this->WwisePostEvent();
 	
 }
 
@@ -30,18 +28,31 @@ void ATank::BeginPlay()
 void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
 }
-
-void ATank::setWwiseComponenet()
-{
-	WwiseComponent = GetOwner()->FindComponentByClass<UAkComponent>();
-}
-
 
 void ATank::AimAt(FVector HitLocation)
 {
 	TankAimingComponent->AimAt(HitLocation,LaunchSpeed);
+}
+
+void ATank::TurretTurnSound(float TurnSpeed)
+{
+	float TurnSpeedAbsolute = std::abs(TurnSpeed);
+	if ((TurnSpeedAbsolute > 1) && (bIsTurning == false))
+	{
+		bIsTurning=true;
+		WwiseComponent->PostAkEventByName("TankTurretStartMove");
+	}
+	if ((TurnSpeedAbsolute < 1) && (bIsTurning == true))
+	{
+		bIsTurning = false;
+		WwiseComponent->PostAkEventByName("TankTurretStopMove");
+	}
+	//if (isPlayerPawn)
+	//{
+	//	UE_LOG(LogTemp, Warning, TEXT("bIsTurning = %b"), bIsTurning);
+	//}
+	
 }
 
 void ATank::SetBarrelReference(UTankBarrel* BarrelToSet)
@@ -55,11 +66,16 @@ void ATank::SetTurretReference(UTankTurret* TurretToSet)
 	TankAimingComponent->SetTurretReference(TurretToSet);
 }
 
+void ATank::SetAkReference(UAkComponent* AkComponentToSet)
+{
+	WwiseComponent = AkComponentToSet;
+}
+
+
 void ATank::Fire()
 {
 	if (!ProjectileBlueprint) { UE_LOG(LogTemp,Warning,TEXT("ProjectileBlueprint not assigned to tank")); return; }
 	bool bisReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds;
-	WwiseComponent->PostAkEventByName("TANK_FIRE");
 
 	if (Barrel && bisReloaded)
 	{
@@ -69,6 +85,12 @@ void ATank::Fire()
 			);
 		Projectile->LauchProjectile(LaunchSpeed);
 		LastFireTime = FPlatformTime::Seconds();
+		if (WwiseComponent)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("WwiseComponent ptr is not null!"));
+			WwiseComponent->PostAkEventByName("TankFire");
+		}
 	}
 
 }
+

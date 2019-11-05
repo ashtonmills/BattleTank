@@ -23,14 +23,6 @@
 
 #define GET_AK_EVENT_NAME(AkEvent, EventName) ((AkEvent) ? ((AkEvent)->GetName()) : (EventName))
 
-#if !defined(AK_SUPPORT_WCHAR) || defined(AK_PS4) || defined(AK_LINUX) || defined(AK_MAC_OS_X) || defined(AK_IOS) || defined(AK_NX)
-	#define TCHAR_TO_AK(Text) (const ANSICHAR*)(TCHAR_TO_ANSI(Text))
-	#define GET_AK_STRING_PTR(SrcFString) StringCast<ANSICHAR>(*(SrcFString))
-#else
-	#define TCHAR_TO_AK(Text) (const WIDECHAR*)(Text)
-	#define GET_AK_STRING_PTR(SrcFString) (WIDECHAR*)(*(SrcFString))
-#endif
-
 
 DECLARE_LOG_CATEGORY_EXTERN(LogAkAudio, Log, All);
 DECLARE_EVENT(FAkAudioDevice, SoundbanksLoaded);

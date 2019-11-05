@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "Runtime/Engine/Classes/Components/SceneComponent.h"
+#include "Tank.h"
 #include "Runtime/Engine/Classes/GameFramework/Actor.h"
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 #include "TankAimingComponent.generated.h"
@@ -33,6 +34,7 @@ protected:
 public:	
 
 	void AimAt(FVector Hitlocation, float LaunchSpeed);
+	float CurrentYawTurnSpeed;
 
 private:
 	UTankBarrel* Barrel = nullptr;

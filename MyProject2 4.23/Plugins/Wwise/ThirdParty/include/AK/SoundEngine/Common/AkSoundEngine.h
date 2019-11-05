@@ -21,7 +21,7 @@ under the Apache License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES
 OR CONDITIONS OF ANY KIND, either express or implied. See the Apache License for
 the specific language governing permissions and limitations under the License.
 
-  Version: v2019.1.4  Build: 7065
+  Version: v2019.1.5  Build: 7093
   Copyright (c) 2006-2019 Audiokinetic Inc.
 *******************************************************************************/
 
@@ -349,7 +349,7 @@ namespace AK
 		/// platform settings (for e.g. system menu or control panel option). 
 		/// 
 		/// \warning Call this function only after the sound engine has been properly initialized. If you are initializing the sound engine with AkInitSettings::bUseLEngineThread to false, it is required to call RenderAudio() at least once before calling this function to complete the sound engine initialization.
-		/// \return The output configuration. An empty AkChannelConfig (!AkChannelConfig::IsValid()) if device does not exist.
+		/// \return The output configuration. An empty AkChannelConfig AkChannelConfig::IsValid() == false if device does not exist.
 		/// \sa 
 		/// - AkSpeakerConfig.h
 		/// - AkOutputSettings
@@ -3563,7 +3563,7 @@ namespace AK
 		/// directory and will append numbers at the end of the provided filename.
 		///
 		/// If no device is running yet, the system will return success AK_Success despite doing nothing.
-		/// Use \ref RegisterAudioDeviceStatusCallback to get notified when devices are created/destructed.
+		/// Use RegisterAudioDeviceStatusCallback to get notified when devices are created/destructed.
 		///
 		/// \return AK_Success if successful, AK_Fail if there was a problem starting the output capture.
 		/// \remark
@@ -3578,6 +3578,7 @@ namespace AK
 		/// - <tt>AK::StreamMgr::SetFileLocationResolver()</tt>
 		/// - \ref streamingdevicemanager
 		/// - \ref streamingmanager_lowlevel_location
+		/// - RegisterAudioDeviceStatusCallback
 		AK_EXTERNAPIFUNC( AKRESULT, StartOutputCapture )( 
 			const AkOSChar* in_CaptureFileName				///< Name of the output capture file
 			);
@@ -3765,7 +3766,7 @@ namespace AK
 		/// - Android: Call for APP_CMD_PAUSE
 		/// - iOS: Don't call. All audio interrupts are handled internally.
 		/// - XBoxOne: Use when entering constrained mode or suspended mode (see ResourceAvailability in Xbox One documentation).
-		/// \sa \ref WakeupFromSuspend
+		/// \sa WakeupFromSuspend
 		AK_EXTERNAPIFUNC( AKRESULT, Suspend )(
 			bool in_bRenderAnyway = false /// If set to true, audio processing will still occur, but not outputted. When set to false, no audio will be processed at all, even upon reception of RenderAudio().
 			);
