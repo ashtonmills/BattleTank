@@ -17,6 +17,9 @@
 				<Event Name="TankTurretStartMove" ID="{E479DE45-2215-4EE0-A56B-2D008D12ABC2}">
 					<ChildrenList>
 						<Action Name="" ID="{C7778B2E-3D2D-4660-83AE-350BE2C82436}" ShortID="364600304">
+							<PropertyList>
+								<Property Name="Probability" Type="Real64" Value="50"/>
+							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Target">
 									<ObjectRef Name="TankTurretStartMove" ID="{41BF3C99-AEE0-4312-9D6D-0EC8912F50D4}" WorkUnitID="{2AACF01C-92B0-4CA2-BDA9-77952BFFACC0}"/>
@@ -91,6 +94,7 @@
 						<Action Name="" ID="{20856E29-6F25-4AB8-9C2D-B990D081FAC6}" ShortID="621920499">
 							<PropertyList>
 								<Property Name="Delay" Type="Real64" Value="0.05"/>
+								<Property Name="Probability" Type="Real64" Value="52"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Target">

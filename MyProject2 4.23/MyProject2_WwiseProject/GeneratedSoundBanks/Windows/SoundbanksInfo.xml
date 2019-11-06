@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <SoundBanksInfo Platform="Windows" BasePlatform="Windows" SchemaVersion="11" SoundbankVersion="134">
 	<RootPaths>
-		<ProjectRoot>E:\Projects\PersonalLearning\BattleTank\MyProject2\MyProject2_WwiseProject\</ProjectRoot>
-		<SourceFilesRoot>E:\Projects\PersonalLearning\BattleTank\MyProject2\MyProject2_WwiseProject\.cache\Windows\</SourceFilesRoot>
-		<SoundBanksRoot>E:\Projects\PersonalLearning\BattleTank\MyProject2\MyProject2_WwiseProject\GeneratedSoundBanks\Windows\</SoundBanksRoot>
+		<ProjectRoot>E:\Projects\PersonalLearning\BattleTank\MyProject2 4.23\MyProject2_WwiseProject\</ProjectRoot>
+		<SourceFilesRoot>E:\Projects\PersonalLearning\BattleTank\MyProject2 4.23\MyProject2_WwiseProject\.cache\Windows\</SourceFilesRoot>
+		<SoundBanksRoot>E:\Projects\PersonalLearning\BattleTank\MyProject2 4.23\MyProject2_WwiseProject\GeneratedSoundBanks\Windows\</SoundBanksRoot>
 		<ExternalSourcesInputFile></ExternalSourcesInputFile>
-		<ExternalSourcesOutputRoot>E:\Projects\PersonalLearning\BattleTank\MyProject2\MyProject2_WwiseProject\GeneratedSoundBanks\Windows</ExternalSourcesOutputRoot>
+		<ExternalSourcesOutputRoot>E:\Projects\PersonalLearning\BattleTank\MyProject2 4.23\MyProject2_WwiseProject\GeneratedSoundBanks\Windows</ExternalSourcesOutputRoot>
 	</RootPaths>
 	<DialogueEvents/>
 	<StreamedFiles/>
@@ -30,21 +30,45 @@
 					<ShortName>TurretStopMove_04.wav</ShortName>
 					<Path>SFX\TurretStopMove_04_10C4C929.wem</Path>
 				</File>
+				<File Id="182759042" Language="SFX">
+					<ShortName>TurretStartMove_04.wav</ShortName>
+					<Path>SFX\TurretStartMove_04_10C4C929.wem</Path>
+				</File>
 				<File Id="216737451" Language="SFX">
 					<ShortName>TurretStartMove_01.wav</ShortName>
 					<Path>SFX\TurretStartMove_01_10C4C929.wem</Path>
 				</File>
-				<File Id="599337074" Language="SFX">
-					<ShortName>CannonTank GUNS02_36_1.wav</ShortName>
-					<Path>SFX\CannonTank GUNS02_36_1_10C4C929.wem</Path>
+				<File Id="236640162" Language="SFX">
+					<ShortName>TurretStartMove_06.wav</ShortName>
+					<Path>SFX\TurretStartMove_06_10C4C929.wem</Path>
+				</File>
+				<File Id="430766682" Language="SFX">
+					<ShortName>TankFireThunk_02.wav</ShortName>
+					<Path>SFX\TankFireThunk_02_10C4C929.wem</Path>
 				</File>
 				<File Id="617270310" Language="SFX">
 					<ShortName>TurretStopMove_05.wav</ShortName>
 					<Path>SFX\TurretStopMove_05_10C4C929.wem</Path>
 				</File>
+				<File Id="671435840" Language="SFX">
+					<ShortName>TankFireThunk_01.wav</ShortName>
+					<Path>SFX\TankFireThunk_01_10C4C929.wem</Path>
+				</File>
+				<File Id="831263211" Language="SFX">
+					<ShortName>TurretStartMove_05.wav</ShortName>
+					<Path>SFX\TurretStartMove_05_10C4C929.wem</Path>
+				</File>
 				<File Id="899113679" Language="SFX">
 					<ShortName>TankTurretMoveLoop_01.wav</ShortName>
 					<Path>SFX\TankTurretMoveLoop_01_D79FB2B7.wem</Path>
+				</File>
+				<File Id="975548468" Language="SFX">
+					<ShortName>TurretStartMove_02.wav</ShortName>
+					<Path>SFX\TurretStartMove_02_10C4C929.wem</Path>
+				</File>
+				<File Id="1067454672" Language="SFX">
+					<ShortName>TurretStartMove_03.wav</ShortName>
+					<Path>SFX\TurretStartMove_03_10C4C929.wem</Path>
 				</File>
 			</IncludedMemoryFiles>
 		</SoundBank>
